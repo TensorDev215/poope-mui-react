@@ -1,21 +1,16 @@
-import React from 'react';
-import { Grid, Grid2, Typography } from "@mui/material";
+import { RouterProvider } from "react-router-dom";
+import { CssBaseline } from "@mui/material";
+
+import router from "./routes";
+import AppTheme from "./theme/AppTheme";
 
 const App = () => {
   return (
-    <Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="h1" color="primary">
-            Welcome to My App
-          </Typography>
-        </Grid>
-        <Grid item xs={6}>
-          asdfasdfasdfasd 
-        </Grid>
-      </Grid>
-    </Grid>
+    <AppTheme>
+      <CssBaseline />
+      <RouterProvider router={router} />
+    </AppTheme>
   )
 }
 
-export default App;
+export default App
