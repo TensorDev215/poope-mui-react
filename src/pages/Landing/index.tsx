@@ -1,16 +1,12 @@
 import { Box, Container, styled, Typography } from '@mui/material'
 import { Section } from '@/components/Section'
+import Hero from '@/views/Landing/Hero'
 
-const HeroBox = styled(Section)({
-    paddingTop: '15vh',
-    background: 'url(/assets/images/bg-pattern.png) repeat'
-})
+
 
 const Landing = (props: any) => {
     return (
-        <HeroBox {...props}>
-
-        </HeroBox>
+        <Hero sectionId='hero'/>
     )
 }
 

@@ -1,15 +1,16 @@
 import { Box, Stack, Typography } from "@mui/material"
 
+interface HeaderLogoPropsType {
+    color?: string,
+    disableText?: boolean,
+    fontSize?: string
+}
 
 export const HeaderLogo = ({
     color,
     disableText,
     fontSize = 'clamp(28px, 4vw, 30px)'
-}: {
-    color?: string
-    disableText?: boolean
-    fontSize?: string
-}) => {
+}: HeaderLogoPropsType) => {
     return (
         <Stack direction='row' gap={1} component={'a'} href='/' alignItems='center'>
             <Box
