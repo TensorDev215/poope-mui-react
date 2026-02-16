@@ -90,15 +90,21 @@ export const colorSchemes = {
                 main: colors['light'],
                 dark: brand[700],
                 contrastText: colors['dark']
-            }
+            },
+            action: {
+                hover: alpha(gray[200], 0.2),
+                selected:  `${alpha(gray[200], 0.3)}`,
+                active: colors['dark']
+            },
+            background: {
+                default: colors['light'],
+                paper: colors['light']
+            },
+            divider: alpha(colors['divider'], 0.16)
         },
-        action: {
-            hover: alpha(gray[200], 0.2),
-            selected:  `${alpha(gray[200], 0.3)}`,
-            active: colors['dark']
-        }
+
     },
-     dark: {
+    dark: {
         palette: {
             primary: {
                 contrastText: colors['white'],
@@ -110,8 +116,14 @@ export const colorSchemes = {
                 hover: alpha(gray[600], 0.2),
                 selected:  `${alpha(gray[600], 0.3)}`,
                 active: colors['white']
-            }
-        }
+            },
+            background: {
+                default: colors['dark'], //gray[900],
+                paper: colors['dark']
+            },
+            divider: colors['divider']
+        },
+     
     }
 }
 
@@ -127,6 +139,12 @@ export const breakpoints = {
 
 export const typography = {
     fontFamily: 'Mountains of Christmas, sans-serif',
+    h1: {
+        fontSize: '200px',
+        fontWeight: 400,
+        lineHeight: '1.39',
+        letterSpacing: '2px'
+    },
     h3: {
         fontSize: defaultTheme.typography.pxToRem(30),
         fontWeight: 700,
@@ -137,5 +155,23 @@ export const typography = {
         fontSize: '18px',
         fontWeight: 500,
         lineHeight: '24px'
+    },
+    body1: {
+        fontFamily: 'Inter, sans-serif',
+        fontSize: 'clamp(16px, 2vw, 24px)',
+        fontWeight: 400,
+        lineHeight: 'clamp(24px, 2.5vw, 32px)'
+    },
+    caption: {
+        fontFamily: 'Inter, sans-serif',
+        fontSize: '16px',
+        fontWeight: 400,
+        lineHeight: '24px'
+    },
+    subtitle1: {
+        fontFamily: 'Inter, sans-serif',
+        fontSize: '24px',
+        fontWeight: 600,
+        lineHeight: '32px'
     }
 }

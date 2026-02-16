@@ -1,6 +1,7 @@
 import { List, ListItem, ListItemButton, ListItemText, Stack } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { MenuListType } from '@/types'
+import LanguagePicker from '@/components/LanguagePicker'
 
 interface NavbarProps {
     list: MenuListType[]
@@ -12,10 +13,17 @@ export function NavContent({ list, handleClick, pop }: NavbarProps) {
     return (
         <Stack
             gap={4}
-            direction={'row'}
-            sx={{
+            direction={!pop ? 'row': 'column'}
+            sx={theme => ({
+                [theme.breakpoints.down('lg')]: !pop
+                ? {
+                    width: '100%',
+                    justifyContent: 'flex-end',
+                    paddingRight: '8px'
+                }
+                : '',
                 alignItems: 'center'
-            }}
+            })}
         >
             <List
                 dense
@@ -25,7 +33,15 @@ export function NavContent({ list, handleClick, pop }: NavbarProps) {
                     gap: '32px',
                     flexDirection: 'row',
                     padding: 0,
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    [theme.breakpoints.down('lg')]: !pop
+                        ? {
+                            display: 'none'
+                        }
+                        : '',
+                    ...(pop && {
+                        flexDirection: 'column'
+                    })
                 })}
             >
                 {list.map((item: MenuListType, index: number) => (
@@ -46,6 +62,7 @@ export function NavContent({ list, handleClick, pop }: NavbarProps) {
                     </ListItem>
                 ))}
             </List>
+             <LanguagePicker signFontSize='18px' showDrop showLabel/>
         </Stack>
     )
 }

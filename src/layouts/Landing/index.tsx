@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Header } from './Header'
 import { Footer } from './Footer'
-import { Loading } from '@/pages/Loading'
+import { Loading } from '@/pages'
 
 export const LandingLayout = () => {
     return (

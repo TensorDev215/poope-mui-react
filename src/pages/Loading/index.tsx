@@ -1,6 +1,7 @@
 import { Section } from '@/components/Section'
 import { styled, Typography } from '@mui/material'
 
+
 const LoadingBox = styled(Section) ({
     justifyContent: 'center',
     alignItems: 'center'
