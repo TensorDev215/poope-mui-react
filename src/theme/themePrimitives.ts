@@ -145,10 +145,24 @@ export const typography = {
         lineHeight: '1.39',
         letterSpacing: '2px'
     },
+    h2: {
+        fontFamily: 'Iner, sans-serif',
+        fontWeight: 400,
+    },
     h3: {
         fontSize: defaultTheme.typography.pxToRem(30),
-        fontWeight: 700,
-        lineHeight: '40px'
+        fontWeight: 400,
+        lineHeight: '100%'
+    },
+    h4: {
+        fontFamily: 'Iner, sans-serif',
+        fontWeight: 400,
+        lineHeight: '100%'
+    },
+    h5: {
+        fontFamily: 'Iner, sans-serif',
+        fontWeight: 400,
+        lineHeight: '100%'
     },
     body2: {
         fontFamily: 'Iner, sans-serif',
@@ -173,5 +187,11 @@ export const typography = {
         fontSize: '24px',
         fontWeight: 600,
         lineHeight: '32px'
+    },
+    subtitle2: {
+        fontFamily: 'Inter, sans-serif',
+        fontSize: '18px',
+        fontWeight: 400,
+        lineHeight: 'normal'
     }
 }

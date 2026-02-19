@@ -33,7 +33,7 @@ const Header = () => {
 
     return(
         <AppBar
-            position="fixed"
+            position="sticky"
             elevation={0}
             sx={{
                 boxShadow: 0,
@@ -41,6 +41,7 @@ const Header = () => {
                 borderBottom: 'none',
                 
                 width: { md: 'calc(100vw - 220px)', xs: '100vw' },
+                marginLeft: { md: '220px', xs: '0' },
                 backgroundColor: 'transparent !important',
                 padding: { md: '24px 32px', xs: '16px 20px' },
                 backdropFilter: 'none',
