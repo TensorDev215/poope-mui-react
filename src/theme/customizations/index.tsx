@@ -100,7 +100,25 @@ export const customizations: Components<Theme> = {
                 borderColor: colors['white']
               })
             }
-          }
+          },
+          {
+            props: {
+              color: 'secondary',
+              variant: 'outlined'
+            },
+            style: {
+              fontSize: '18px',
+              fontWeight: 600,
+              border: '2px solid',
+              borderColor: colors['dark'],
+              backgroundColor: colors['white'],
+              color: colors['black'],
+              padding: '16px 32px',
+              ...theme.applyStyles('dark', {
+                borderColor: colors['white']
+              })
+            }
+          },
         ]
       })
     }

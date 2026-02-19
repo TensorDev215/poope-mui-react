@@ -1,3 +1,4 @@
+import { colors } from "@/theme/themePrimitives"
 import { Box, Stack, Typography } from "@mui/material"
 
 interface HeaderLogoPropsType {
@@ -7,7 +8,6 @@ interface HeaderLogoPropsType {
 }
 
 export const HeaderLogo = ({
-    color,
     disableText,
     fontSize = 'clamp(28px, 4vw, 30px)'
 }: HeaderLogoPropsType) => {
@@ -23,7 +23,7 @@ export const HeaderLogo = ({
                 src='/assets/images/header-logo.png'
             />
             {!disableText && (
-                <Typography variant="h3" sx={{ textTransform: 'uppercase' }} fontSize={fontSize} color={color}>
+                <Typography variant="h3" sx={{ textTransform: 'uppercase', color: colors['white'] }} fontSize={fontSize}>
                     Poope
                 </Typography>
             )}

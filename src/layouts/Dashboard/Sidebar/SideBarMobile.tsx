@@ -60,7 +60,8 @@ export default function SidebarMobile({ open, toggleDrawer }: SidebarMobileProps
                     position: 'absolute',
                     borderColor: colors['white'],
                     right: '24px',
-                    padding: '11px'
+                    padding: '11px',
+                    color: colors['white']
                 }}
                 onClick={toggleDrawer}
             >
