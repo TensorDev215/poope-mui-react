@@ -1,7 +1,9 @@
 import Dialog from '@mui/material/Dialog'
 import { ROUTES, WalletButtonList } from '@/constants'
-import { Button, DialogContent, DialogTitle, IconButton, Link, Stack, Typography } from '@mui/material'
+import { Button, DialogContent, DialogTitle, IconButton, Link, Stack, Typography, Box } from '@mui/material'
 import { IoMdClose } from 'react-icons/io'
+import { Adapter } from '@solana/wallet-adapter-base'
+import { useWallet } from '@solana/wallet-adapter-react'
 
 const wallets = ['Metamask', 'Phantom', 'Solflare']
 
@@ -11,8 +13,17 @@ export interface ConnectDialogProps {
   onClose: (value: string) => void
 }
 
+const desiredWalletNames: string[] = [
+  "Phantom",
+  "Solflare",
+  "Coinbase Wallet",
+  "WalletConnect",
+];
+
 function ConnectDialog(props: ConnectDialogProps) {
   const { onClose, selectedValue, open } = props
+
+  const { wallets, connected, select } = useWallet();
 
   const handleClose = () => {
     onClose(selectedValue)
@@ -20,6 +31,14 @@ function ConnectDialog(props: ConnectDialogProps) {
 
   const handleListItemClick = (value: string) => {
     onClose(value)
+  }
+
+  const handleConnect = (adapter: Adapter): void => {
+    if (adapter.readyState === "NotDetected") {
+      window.open(adapter.url)
+    } else {
+      select(adapter.name)
+    }
   }
 
   return (
@@ -49,6 +68,17 @@ function ConnectDialog(props: ConnectDialogProps) {
             <IoMdClose size={24} />
           </IconButton>
         </DialogTitle>
+        <Box>
+          {wallets
+            .filter((wallet) => 
+              desiredWalletNames.includes(wallet.adapter.name)
+            )
+            .map((wallet, idx) => (
+              // <Typography>{wallet.adapter.icon}</Typography>
+              <Typography>{wallet.adapter.name}</Typography>
+            ))
+          }
+        </Box>
 
         <DialogContent sx={{ p: 0, width: '100%' }}>
           <Stack direction='column' gap={1.5}>
