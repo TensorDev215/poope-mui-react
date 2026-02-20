@@ -14,20 +14,47 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     paddingTop: '8px',
     paddingBottom: '12px',
     fontSize: 14,
-    border: 'none'
+    border: 'none',
+    ...theme.applyStyles('light', {
+        backgroundColor: '#FFFFFF'
+    })
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
 }));
 
+
+//  sx={
+//             theme => ({
+//                 backgroundColor: theme.palette.primary.light
+//             })
+//           }
+
+
+        //   ...theme.applyStyles('light', {
+        //     fill: 'url(#lightGradient)'
+        //   })
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: '#191919',
     paddingTop: '8px',
     paddingBottom: '12px',
     fontSize: 14,
-    borderBottom: 0
+    borderBottom: 0,
+    ...theme.applyStyles('light', {
+        backgroundColor: '#FAF7F4'
+    })
+  },
+   '&:nth-of-type(even)': {
+    backgroundColor: '#1F1F1F',
+    paddingTop: '8px',
+    paddingBottom: '12px',
+    fontSize: 14,
+    borderBottom: 0,
+    ...theme.applyStyles('light', {
+        backgroundColor: '#FFFFFF'
+    })
   },
   '& td': {
     borderBottom: 0
@@ -53,6 +80,9 @@ const rows = [
   createData('Eclair', 262, 16.0, 24, 6.0),
   createData('Cupcake', 305, 3.7, 67, 4.3),
   createData('Gingerbread', 356, 16.0, 49, 3.9),
+    createData('Eclair', 262, 16.0, 24, 6.0),
+  createData('Cupcake', 305, 3.7, 67, 4.3),
+  createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
 export default function HistoryTable() {
@@ -60,15 +90,16 @@ export default function HistoryTable() {
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 200 }} aria-label="customized table">
         <TableHead >
-          <TableRow sx={{
+          {/* <TableRow sx={{
             backgroundColor: '#6A6A6A'
-        }}>
+          }}> */}
+          <StyledTableRow>
             <StyledTableCell>ID</StyledTableCell>
             <StyledTableCell align="left">Type</StyledTableCell>
             <StyledTableCell align="left">Amount</StyledTableCell>
             <StyledTableCell align="right">Date</StyledTableCell>
             <StyledTableCell align="right">Status</StyledTableCell>
-          </TableRow>
+          </StyledTableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
