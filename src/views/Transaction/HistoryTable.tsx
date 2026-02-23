@@ -6,6 +6,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { TransactionPropsType } from '@/types';
+
+interface HistoryTableProps {
+  transactions: TransactionPropsType[] | null
+  loading: boolean
+  error: Error | null
+}
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -25,16 +32,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 
-//  sx={
-//             theme => ({
-//                 backgroundColor: theme.palette.primary.light
-//             })
-//           }
-
-
-        //   ...theme.applyStyles('light', {
-        //     fill: 'url(#lightGradient)'
-        //   })
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: '#191919',
@@ -74,18 +71,10 @@ function createData(
   return { name, calories, fat, carbs, protein };
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+const HistoryTable = ({ transactions, loading, error }: HistoryTableProps) => {
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error: {error.message} </p>
 
-export default function HistoryTable() {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 200 }} aria-label="customized table">
@@ -94,21 +83,22 @@ export default function HistoryTable() {
             backgroundColor: '#6A6A6A'
           }}> */}
           <StyledTableRow>
-            <StyledTableCell>ID</StyledTableCell>
-            <StyledTableCell align="left">Type</StyledTableCell>
+            <StyledTableCell>Address</StyledTableCell>
             <StyledTableCell align="left">Amount</StyledTableCell>
-            <StyledTableCell align="right">Date</StyledTableCell>
+            <StyledTableCell align="left">Date</StyledTableCell>
+            <StyledTableCell align="right">Type</StyledTableCell>
             <StyledTableCell align="right">Status</StyledTableCell>
           </StyledTableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell align="left">{row.name}</StyledTableCell>
-              <StyledTableCell align="left">{row.calories}</StyledTableCell>
-              <StyledTableCell align="left">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
+
+          {transactions?.map((transaction) => (
+            <StyledTableRow key={transaction.id}>
+              <StyledTableCell align="left">{transaction.address}</StyledTableCell>
+              <StyledTableCell align="left">{transaction.amount}</StyledTableCell>
+              <StyledTableCell align="left">{transaction.date}</StyledTableCell>
+              <StyledTableCell align="right">{transaction.type}</StyledTableCell>
+              <StyledTableCell align="right">Completed</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -116,3 +106,5 @@ export default function HistoryTable() {
     </TableContainer>
   );
 }
+
+export default HistoryTable
