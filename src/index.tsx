@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.querySelector('#root')!).render(
       <ThemeProvider theme={theme}>
         <App />
       </ThemeProvider>
-      
+
     </StyledEngineProvider>
   </React.StrictMode>
 )

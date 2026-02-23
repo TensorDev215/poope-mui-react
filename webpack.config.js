@@ -171,7 +171,8 @@ module.exports = env => {
       compress: true,
       port: process.env.PORT,
       historyApiFallback: true,
-      hot: true,
+      hot: false,
+      liveReload: false,
       client: {
         overlay: {
           errors: true,
