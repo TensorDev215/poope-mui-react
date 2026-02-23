@@ -4,8 +4,9 @@ import { NavigationItemType } from "@/types";
 import { styled } from "@mui/material";
 import { colors } from "@/theme/themePrimitives";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { SideBarMenuListItems, SideBarSubListItems } from "@/constants/sidebarlist";
+
 
 const StyledListItem = styled(ListItem)({
     display: 'block',
@@ -59,10 +60,28 @@ const NavigationItemList = ({ list }: { list: NavigationItemType[] }) => {
 }
 
 export function MenuContent() {
+    const navigate = useNavigate()
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        sessionStorage.removeItem('address')
+
+        navigate('/')
+    }
+
+    const updatedSideBarSubListItems = SideBarSubListItems.map(item => {
+        if (item.link == 'logout') {
+            return {
+                ...item,
+                onClick: handleLogout
+            }
+        }
+        return item
+    })
+
     return (
         <Stack sx={{ flewGrow: 1, height: '100%', justifyContent: 'space-between' }}>
             <NavigationItemList list={SideBarMenuListItems} />
-            <NavigationItemList list={SideBarSubListItems} />
+            <NavigationItemList list={updatedSideBarSubListItems} />
         </Stack>
     )
 }
