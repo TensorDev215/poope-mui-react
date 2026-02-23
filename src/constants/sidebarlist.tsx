@@ -12,5 +12,5 @@ export const SideBarMenuListItems: NavigationItemType[] = [
 
 export const SideBarSubListItems: NavigationItemType[] = [
   { link: 'support', text: 'Support', icon: <AppIcon name='support' size={24} /> },
-  { link: 'logout', text: 'Log Out', icon: <AppIcon name='logout' size={24} /> }
+  { link: 'logout', text: 'Log Out', icon: <AppIcon name='logout' size={24} />,  onClick: () => {} }
 ]

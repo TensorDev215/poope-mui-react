@@ -13,5 +13,23 @@ export interface NavigationItemType {
     link: string
     text: string
     icon: ReactNode
-    handleClick?: () => void
+    onClick?: () => void
+}
+
+export interface SendTransactionPropsType {
+    amount: number
+    type: boolean
+}
+
+export interface ReceiveMessageType {
+    message: string
+}
+
+
+export interface TransactionPropsType {
+    id: number,
+    address: number,
+    amount: number,
+    date: string,
+    type: string
 }

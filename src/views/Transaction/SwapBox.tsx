@@ -12,13 +12,74 @@ import {
 import AddIcon from '@/assets/icons/add.svg'
 import TransactionIcon from '@/assets/icons/transactions.svg'
 import DownIcon from '@/assets/icons/down.svg'
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { getAuthHeader } from '@/hooks/useFetch'
+import { SendTransactionPropsType, ReceiveMessageType } from '@/types'
 
-export const SwapBox = () => {
+const apiURI = process.env.REACT_API_URI
+
+export const SwapBox = ({ onTransactionComplted }: { onTransactionComplted: () => void }) => {
     const [swapState, setSwapState] = useState<boolean>(true)
 
     const handleChange = () => {
         setSwapState(prev => !prev)
+    }
+
+    const [inputPoope, setInputPoope] = useState<string>('0')
+    const [inputUsdt, setInputUsdt] = useState<string>('0')
+
+    const isValidFloat = (value: string) => {
+        return !isNaN(parseFloat(value)) && value.trim() !== ''
+    }
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, inputNum: number) => {
+        const value = e.target.value
+        if (isValidFloat(value)) {
+            const numericValue = parseFloat(value)
+
+            if (inputNum === 1) {
+                setInputPoope(value)
+                setInputUsdt((numericValue * 4).toString())
+            } else {
+                setInputUsdt(value)
+                setInputPoope((numericValue / 4).toString())
+            }
+        }
+    }
+
+    const [data, setData] = useState<ReceiveMessageType | null>(null)
+    const [error, setError] = useState<Error | null>(null)
+    const [loading, setLoading] = useState<boolean>(true)
+    const loadingDelay = 1500
+
+    const fetchData = async (payload: SendTransactionPropsType) => {
+        setLoading(true)
+
+        try {
+            const response = await fetch(apiURI + '/api/transact', {
+                method: 'POST',
+                headers: getAuthHeader(),
+                body: JSON.stringify(payload)
+            })
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok')
+            }
+            const result: ReceiveMessageType = await response.json()
+            setData(result)
+            console.log(data)
+            onTransactionComplted()
+        } catch (err) {
+            setError(err instanceof Error ? err : new Error('An unknown error occured'))
+        } finally {
+            setTimeout(() => {
+                setLoading(false)
+            }, loadingDelay)
+        }
+    }
+
+    const handleClick = () => {
+        fetchData({ amount: parseFloat(inputPoope), type: swapState })
     }
 
     return (
@@ -57,7 +118,7 @@ export const SwapBox = () => {
                     onClick={handleChange}
                 >
                     <AddIcon />
-                    <Typography variant='caption'>{swapState ? 'Swap' : 'Buy'}</Typography>
+                    <Typography variant='caption'>{swapState ? 'Buy' : 'Swap'}</Typography>
                 </Stack>
             </Stack>
             <Stack direction='column'>
@@ -75,6 +136,8 @@ export const SwapBox = () => {
                 >
                     <OutlinedInput
                         id='outlined-adornment-weight'
+                        value={inputPoope}
+                        onChange={e => handleInputChange(e, 1)}
                         sx={{
                             '& .MuiInputBase-input': {
                                 padding: '12px 16px'
@@ -119,6 +182,8 @@ export const SwapBox = () => {
                 >
                     <OutlinedInput
                         id='outlined-adornment-weight'
+                        value={inputUsdt}
+                        onChange={e => handleInputChange(e, 2)}
                         sx={{
                             '& .MuiInputBase-input': {
                                 padding: '12px 16px'
@@ -203,8 +268,8 @@ export const SwapBox = () => {
                     ...theme.applyStyles('light', {
                         borderColor: '#1F1F1F'
                     })
-                })
-            }
+                })}
+                onClick={handleClick}
             >
                 <Typography
                     fontSize='14px'

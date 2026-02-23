@@ -23,6 +23,8 @@ export const Web3Provider = ({ children }: PropsWithChildren) => {
         ],
         [network]
     );
+
+    
     return (
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>
