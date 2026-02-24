@@ -3,7 +3,7 @@ import { colors } from "@/theme/themePrimitives"
 
 import { HeaderLogo, MenuContent } from "@/layouts/components"
 
-const Sidebar = () => {
+const Sidebar: React.FC<{notificationState: boolean}> = ({notificationState}) => {
     return (
         <Drawer
             variant="permanent"
@@ -26,7 +26,7 @@ const Sidebar = () => {
                     mt: '50px'
                 }}
             >
-                <MenuContent />
+                <MenuContent notificationState={notificationState} />
             </Box>
         </Drawer>
     )

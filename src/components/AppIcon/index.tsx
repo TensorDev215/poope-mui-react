@@ -22,6 +22,7 @@ import LogoutIcon from '@/assets/icons/logout.svg'
 import RightIcon from '@/assets/icons/right.svg'
 import AddIcon from '@/assets/icons/add.svg'
 import CalendarIcon from '@/assets/icons/calendar.svg'
+import NonNotification from '@/assets/icons/non-notification.svg'
 
 export const ICON_MAP = {
   sun: SunIcon,
@@ -38,6 +39,7 @@ export const ICON_MAP = {
   transactions: TransactionsIcon,
   market: MarketIcon,
   notification: NotificationIcon,
+  nonNotification: NonNotification,
   settings: SettingsIcon,
   support: SupportIcon,
   logout: LogoutIcon,

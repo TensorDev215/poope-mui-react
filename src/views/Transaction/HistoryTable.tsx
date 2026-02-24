@@ -7,6 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TransactionPropsType } from '@/types';
+import { shortenString } from '@/utils';
+import { Loading } from '@/pages';
 
 interface HistoryTableProps {
   transactions: TransactionPropsType[] | null
@@ -72,7 +74,7 @@ function createData(
 }
 
 const HistoryTable = ({ transactions, loading, error }: HistoryTableProps) => {
-  if (loading) return <p>Loading...</p>
+  if (loading) return <Loading />
   if (error) return <p>Error: {error.message} </p>
 
   return (
@@ -94,7 +96,7 @@ const HistoryTable = ({ transactions, loading, error }: HistoryTableProps) => {
 
           {transactions?.map((transaction) => (
             <StyledTableRow key={transaction.id}>
-              <StyledTableCell align="left">{transaction.address}</StyledTableCell>
+              <StyledTableCell align="left">{shortenString(transaction.address)}</StyledTableCell>
               <StyledTableCell align="left">{transaction.amount}</StyledTableCell>
               <StyledTableCell align="left">{transaction.date}</StyledTableCell>
               <StyledTableCell align="right">{transaction.type}</StyledTableCell>

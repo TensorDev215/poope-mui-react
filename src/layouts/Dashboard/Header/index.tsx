@@ -11,12 +11,18 @@ import { SearchInput } from "@/components/Inputs"
 import { HeaderLogo } from "@/layouts/components"
 import SidebarMobile from "../Sidebar/SideBarMobile"
 import { HeaderText } from "@/layouts/components/HeaderText"
+import { Link } from "react-router-dom"
+
+import { ROUTES } from "@/constants/routes"
 
 
-const Header = () => {
+const Header: React.FC<{notificationState: boolean}> = ({notificationState}) => {
     const [isSticky, setIsSticky] = useState<boolean>(false)
     const { isMobile } = useDeviceType()
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
+
+    // const [notification, setNotifcation] = useState<boolean>(notificationState)
+    // console.log("sdfasdfasdfasdf", notification)
 
     const toggleDrawer = useCallback(() => {
         setSidebarOpen(pre => !pre)
@@ -98,7 +104,13 @@ const Header = () => {
 
                         {!isMobile && <ColorModeIcon sx={{ border: 'none' }} />}
                         <IconButton sx={{ padding: '8px', border: 0 }}>
-                            <AppIcon name="notification" size={24} />
+                            <Link to={ROUTES.NOTIFICATION}>
+                                {notificationState?
+                                    <AppIcon name="notification" size={24} />
+                                    :
+                                    <AppIcon name="nonNotification" size={24} />
+                                }
+                            </Link>
                         </IconButton>
 
                         <Avatar alt='Avatar' src='assets/images/avatar.png' sx={{ border: '2px solid' }} />
@@ -106,7 +118,7 @@ const Header = () => {
                 </Stack>
             </Stack>
 
-            <SidebarMobile open={sidebarOpen} toggleDrawer={toggleDrawer} />
+            <SidebarMobile open={sidebarOpen} toggleDrawer={toggleDrawer} notificationState={notificationState} />
         </AppBar>
     )
 
