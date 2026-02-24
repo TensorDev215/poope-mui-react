@@ -25,9 +25,10 @@ const Drawer = styled(MuiDrawer)({
 interface SidebarMobilePropsType {
     open: boolean
     toggleDrawer: () => void
+    notificationState: boolean
 }
 
-export default function SidebarMobile({ open, toggleDrawer }: SidebarMobilePropsType) {
+export default function SidebarMobile({ open, toggleDrawer, notificationState }: SidebarMobilePropsType) {
     return (
         <Drawer
             anchor='left'
@@ -52,7 +53,7 @@ export default function SidebarMobile({ open, toggleDrawer }: SidebarMobileProps
                     mt: '50px'
                 }}
             >
-                <MenuContent />
+                <MenuContent notificationState={notificationState} />
             </Box>
 
             <IconButton

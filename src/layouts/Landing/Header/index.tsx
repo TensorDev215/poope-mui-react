@@ -1,16 +1,19 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import AppBar from '@mui/material/AppBar';
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import AppBar from '@mui/material/AppBar'
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import { NavContent, HeaderLogo } from '@/layouts/components';
-import { Box, Button, Drawer, IconButton, StepConnector } from '@mui/material';
-import { MenuListType } from '@/types';
-import AppIcon from '@/components/AppIcon';
-import ColorModeIcon from '@/theme/ColorModeIcon';
-import Hamburger from '@/components/Hamburger';
+import { NavContent, HeaderLogo } from '@/layouts/components'
+import { Box, Button, Drawer, IconButton, StepConnector } from '@mui/material'
+import { MenuListType } from '@/types'
+import AppIcon from '@/components/AppIcon'
+import ColorModeIcon from '@/theme/ColorModeIcon'
+import Hamburger from '@/components/Hamburger'
 
-import ConnectDialog from '@/layouts/components/ConnectDialog';
+import ConnectDialog from '@/layouts/components/ConnectDialog'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { disconnect } from 'process'
 
 const mainListItems: MenuListType[] = [
     { link: 'about', text: 'About' },
@@ -20,27 +23,38 @@ const mainListItems: MenuListType[] = [
     { link: 'faq', text: 'FAQ' }
 ]
 
-const emails = ['username@gmail.com', 'user02@gmail.com']
+
+
+const apiURI = process.env.REACT_API_URI
+
 
 export const Header = () => {
+    const { connected, disconnect, publicKey, wallet } = useWallet()
+
+    const walletAddress = publicKey ? publicKey.toString() : ''
+
+    // console.log('fdgdsfgdsf', walletAddress, 'dfsafdsadefs', connected)
+    // console.log(wallet)
+
     const [isSticky, setIsSticky] = useState<boolean>(false)
     const [menuOpen, setMenuOpen] = useState<boolean>(false)
 
     const [open, setOpen] = useState(false)
-    const [ selectedValue, setSelectedValue ] = useState(emails[1])
 
-    const handleClose = (value: string) => {
+    const handleClose = () => {
         setOpen(false)
-        setSelectedValue(value)
     }
 
     const toggleMenu = useCallback(() => {
         setMenuOpen(pre => !pre)
     }, [])
 
-
     const handleConnectClick = () => {
         setOpen(true)
+    }
+
+    const disconnectWallet = () => {
+        disconnect()
     }
 
     useEffect(() => {
@@ -51,13 +65,51 @@ export const Header = () => {
         }
     }, [])
 
-    const handleLinkClick = useCallback ((id: string) => {
+    const handleLinkClick = useCallback((id: string) => {
         const element = document.getElementById(id)
         element?.scrollIntoView({
             behavior: 'smooth'
         })
         setMenuOpen(false)
     }, [])
+
+
+    const [error, setError] = useState<Error | null>(null)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        
+        const fetchData = async () => {
+            try {
+                const payload = {
+                    address: publicKey
+                }
+                const response = await fetch(apiURI + '/api/connect', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                })
+
+                if (!response.ok) {
+                    throw new Error("Network response was not ok")
+                }
+                const result = await response.json()
+                console.log(result)
+                localStorage.setItem('token', result.access_token)
+                localStorage.setItem('address', result.address)
+            } catch (err) {
+                err instanceof Error ? setError(err) : setError(new Error("An unknow error occured"))
+            }
+        }
+
+        if (connected) {
+            fetchData()
+        } else {
+            navigate("/")
+        }
+    }, [publicKey, navigate])
 
     const DrawerContent = useMemo(
         () => (
@@ -86,7 +138,7 @@ export const Header = () => {
                             alt='Header Icon'
                             src='/assets/images/header-logo.png'
                         />
-                        <Typography component={'h2'} variant='h3' sx={{ textTransform: 'uppercase' }} >
+                        <Typography component={'h2'} variant='h3' sx={{ textTransform: 'uppercase' }}>
                             Poope
                         </Typography>
                     </Stack>
@@ -103,20 +155,17 @@ export const Header = () => {
                         variant='contained'
                         color='primary'
                         startIcon={<AppIcon name='wallet' />}
-                        onClick={handleConnectClick}
+                        onClick={connected ? disconnectWallet: handleConnectClick }
                         sx={{ width: '100%' }}
                     >
-                        Connect Wallet
+                        {connected ? 'Disconnect' : 'Connect'}
                     </Button>
-                    
-                    <ConnectDialog 
-                        selectedValue={selectedValue}
-                        open={open}
-                        onClose={handleClose}
-                    />
+
+                    <ConnectDialog open={open} onClose={handleClose} />
                 </Stack>
             </Stack>
-        ), [menuOpen]
+        ),
+        [menuOpen]
     )
 
     return (
@@ -126,7 +175,7 @@ export const Header = () => {
             sx={{
                 boxShadow: 'none',
                 backgroundImage: 0,
-                
+
                 borderBottom: 'none',
                 width: '100vw',
                 backdropFilter: 'none',
@@ -137,9 +186,9 @@ export const Header = () => {
                 })
             }}
         >
-            <Container maxWidth='lg' sx={{ py:'24px' }}>
+            <Container maxWidth='lg' sx={{ py: '24px' }}>
                 <Stack
-                    direction="row"
+                    direction='row'
                     sx={{
                         justifyContent: 'space-between',
                         alignItems: 'center'
@@ -147,7 +196,7 @@ export const Header = () => {
                 >
                     <HeaderLogo />
                     <NavContent list={mainListItems} handleClick={handleLinkClick} />
-                    
+
                     <Stack direction='row' gap={{ md: 2, xs: 1 }} sx={{ alignItems: 'center' }}>
                         <ColorModeIcon />
                         <Button
@@ -155,18 +204,13 @@ export const Header = () => {
                             color='primary'
                             startIcon={<AppIcon name='wallet' />}
                             sx={{
-                                display: { lg: 'inline-flex', xs: 'none'}
+                                display: { lg: 'inline-flex', xs: 'none' }
                             }}
-                            onClick={handleConnectClick}
+                             onClick={connected ? disconnectWallet: handleConnectClick}
                         >
-                            Connect
+                            {connected ? 'Disconnect' : 'Connect'}
                         </Button>
-                            <ConnectDialog 
-                                selectedValue={selectedValue}
-                                open={open}
-                                onClose={handleClose}
-                            />
-                        
+                        <ConnectDialog open={open} onClose={handleClose} />
 
                         <Hamburger toggleMenu={toggleMenu} menuopen={menuOpen} />
                     </Stack>

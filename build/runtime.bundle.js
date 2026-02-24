@@ -34,7 +34,7 @@
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
@@ -157,7 +157,7 @@
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("4a4f7bd188e6c40bcdbb")
+/******/ 		__webpack_require__.h = () => ("6d8a846cc9fb6c26a15b")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
