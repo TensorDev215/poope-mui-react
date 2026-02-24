@@ -2,9 +2,15 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { Loading } from "@/pages";
 
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Box, Stack, styled } from "@mui/material";
+import { useState } from "react";
+import io from 'socket.io-client';
+import { useLocation } from "react-router-dom";
+
+const socket = io('http://localhost:5000');
+
 
 const DashboardBox = styled(Box) (({theme}) => ({
     width: '100vw',
@@ -20,6 +26,29 @@ const DashboardBox = styled(Box) (({theme}) => ({
 
 
 export const DashboardLayout = () => {
+    const [notificationState, setNotificationState] = useState(false)
+
+    const triggerAction = () => {
+        setNotificationState(!notificationState)
+    }
+
+    const location = useLocation()
+
+    useEffect(() => {
+        if (location.pathname === '/notification') {
+            setNotificationState(false)
+        }
+
+        socket.on('new_notification', (notification) => {
+            console.log('New transaction is inserted.', notification)
+            setNotificationState(true)
+        })
+
+        return () => {
+            socket.off('new_notification')
+        }
+    }, [location.pathname])
+
     return (
         <Box
             sx={theme=> ({
@@ -28,9 +57,9 @@ export const DashboardLayout = () => {
                 background: { md: 'url(/assets/images/bg-pattern.png) repeat', xs: 'none' }
             })} 
         >
-            <Sidebar />
+            <Sidebar notificationState={notificationState} />
             <Stack direction='column' gap={{ md: '18px', xs: '8px' }}>
-                <Header />
+                <Header notificationState={notificationState} />
                 <DashboardBox>
                     <Suspense fallback={<Loading />}>
                         <Outlet />

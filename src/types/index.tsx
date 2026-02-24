@@ -28,7 +28,7 @@ export interface ReceiveMessageType {
 
 export interface TransactionPropsType {
     id: number,
-    address: number,
+    address: string,
     amount: number,
     date: string,
     type: string

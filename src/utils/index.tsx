@@ -32,3 +32,11 @@ return (
     />
   )
 }
+
+export const shortenString = (original: string) => {
+  const prefix = original.slice(0, 3)
+  const middle = ". . ."
+  const suffix = original.slice(-3)
+
+  return prefix + middle + suffix
+}
