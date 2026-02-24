@@ -5,7 +5,7 @@ import { styled } from "@mui/material";
 import { colors } from "@/theme/themePrimitives";
 
 import { NavLink, useNavigate } from "react-router-dom";
-import { SideBarMenuListItems, SideBarSubListItems } from "@/constants/sidebarlist";
+import { SideBarMenuListItems, SideBarSubListItems, secondSideBarMenuListItems } from "@/constants/sidebarlist";
 
 
 const StyledListItem = styled(ListItem)({
@@ -59,7 +59,7 @@ const NavigationItemList = ({ list }: { list: NavigationItemType[] }) => {
     )
 }
 
-export function MenuContent() {
+export const MenuContent: React.FC<{notificationState: boolean}> = ({notificationState}) => {
     const navigate = useNavigate()
     const handleLogout = () => {
         localStorage.removeItem('token')
@@ -80,7 +80,12 @@ export function MenuContent() {
 
     return (
         <Stack sx={{ flewGrow: 1, height: '100%', justifyContent: 'space-between' }}>
-            <NavigationItemList list={SideBarMenuListItems} />
+            {notificationState?
+                <NavigationItemList list={SideBarMenuListItems} />
+                :
+                <NavigationItemList list={secondSideBarMenuListItems} />
+            }
+            
             <NavigationItemList list={updatedSideBarSubListItems} />
         </Stack>
     )
