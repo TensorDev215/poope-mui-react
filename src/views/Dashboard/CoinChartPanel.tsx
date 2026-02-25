@@ -5,7 +5,7 @@ import { colors } from '@/theme/themePrimitives'
 import { useCallback, useState } from 'react'
 
 
-const dateRanges = ['1H', '4H', '1D', '1M']
+const dateRanges = ['4H', '8H', '1D', '1M']
 
 const TypeChangeTabs = styled(Tabs)(({ theme }) => ({
   
