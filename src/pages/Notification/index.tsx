@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react'
 import { TransactionPropsType } from '@/types'
 import { getAuthHeader } from '@/hooks/useFetch'
 import { shortenString } from '@/utils'
+import { Loading } from '../Loading'
 
 const apiURI = process.env.REACT_API_URI
 
@@ -27,10 +28,9 @@ const columns: readonly Column[] = [
     { id: 'content', label: 'CONTENT', minWidth: 200 }
 ]
 
-
 interface NoitificationType {
-    id: string,
-    content: string,
+    id: string
+    content: string
 }
 
 const Notification = () => {
@@ -53,20 +53,18 @@ const Notification = () => {
                 throw new Error('Network response was not ok')
             }
             const results: TransactionPropsType[] = await response.json()
-            
+
             const convertedResult: NoitificationType[] = []
 
-            results.map((result) => {
-                
-                const content = "This wallet" +" " + result.type + " " + result.amount +  " Poope" + " on " + result.date + "."
+            results.map(result => {
+                const content =
+                    'This wallet' + ' ' + result.type + ' ' + result.amount + ' Poope' + ' on ' + result.date + '.'
 
-                convertedResult.push({id: shortenString(result.address), content: content})
+                convertedResult.push({ id: shortenString(result.address), content: content })
             })
 
             setNotifications(convertedResult.reverse())
             console.log(notifications)
-
-
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to fetch transations'))
         } finally {
@@ -76,9 +74,12 @@ const Notification = () => {
         }
     }
 
-      useEffect(() => {
+    useEffect(() => {
         fetchTransactions()
-      }, [])
+    }, [])
+
+    if (loading) return <Loading />
+    if (error) return <p>Error: {error.message} </p>
 
     const [page, setPage] = React.useState(0)
     const [rowsPerPage, setRowsPerPage] = React.useState(10)
@@ -128,7 +129,7 @@ const Notification = () => {
             <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component='div'
-                count={notifications?.length??0}
+                count={notifications?.length ?? 0}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
