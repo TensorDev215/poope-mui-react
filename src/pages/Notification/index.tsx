@@ -78,8 +78,8 @@ const Notification = () => {
         fetchTransactions()
     }, [])
 
-    if (loading) return <Loading />
-    if (error) return <p>Error: {error.message} </p>
+    // if (loading) return <Loading />
+    // if (error) return <p>Error: {error.message} </p>
 
     const [page, setPage] = React.useState(0)
     const [rowsPerPage, setRowsPerPage] = React.useState(10)
