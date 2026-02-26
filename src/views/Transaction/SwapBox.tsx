@@ -67,7 +67,6 @@ export const SwapBox = ({ onTransactionComplted }: { onTransactionComplted: () =
             }
             const result: ReceiveMessageType = await response.json()
             setData(result)
-            console.log(data)
             onTransactionComplted()
         } catch (err) {
             setError(err instanceof Error ? err : new Error('An unknown error occured'))

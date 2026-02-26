@@ -8,6 +8,8 @@ import { lazy } from "react";
 
 import { ROUTES } from "@/constants";
 
+import PrivateRoute from "./PrivateRoute";
+
 const Landing = lazy(() => import('@/pages/Landing'))
 
 const Dashboard = lazy(() => import('@/pages/Dashboard'))
@@ -35,19 +37,19 @@ const router = createBrowserRouter([
         children: [
             {
                 path: ROUTES.DASHBOARD,
-                element: <Dashboard />
+                element: <PrivateRoute><Dashboard /></PrivateRoute>
             },
             {
                 path: ROUTES.TRANSACTIONS,
-                element: <Transaction />
+                element: <PrivateRoute><Transaction /></PrivateRoute>
             },
             {
                 path: ROUTES.NOTIFICATION,
-                element: <Notification />
+                element: <PrivateRoute><Notification /></PrivateRoute>
             },
             {
                 path: ROUTES.SETTINGS,
-                element: <Settings />
+                element: <PrivateRoute><Settings /></PrivateRoute>
             },
         ]
     }

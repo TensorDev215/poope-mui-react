@@ -33,9 +33,6 @@ export const Header = () => {
 
     const walletAddress = publicKey ? publicKey.toString() : ''
 
-    // console.log('fdgdsfgdsf', walletAddress, 'dfsafdsadefs', connected)
-    // console.log(wallet)
-
     const [isSticky, setIsSticky] = useState<boolean>(false)
     const [menuOpen, setMenuOpen] = useState<boolean>(false)
 
@@ -54,6 +51,8 @@ export const Header = () => {
     }
 
     const disconnectWallet = () => {
+        localStorage.removeItem("token")
+        localStorage.removeItem("address")
         disconnect()
     }
 
@@ -96,7 +95,6 @@ export const Header = () => {
                     throw new Error("Network response was not ok")
                 }
                 const result = await response.json()
-                console.log(result)
                 localStorage.setItem('token', result.access_token)
                 localStorage.setItem('address', result.address)
             } catch (err) {
