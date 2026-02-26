@@ -6,6 +6,8 @@ import { colors } from "@/theme/themePrimitives";
 
 import { NavLink, useNavigate } from "react-router-dom";
 import { SideBarMenuListItems, SideBarSubListItems, secondSideBarMenuListItems } from "@/constants/sidebarlist";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { disconnect } from "process";
 
 
 const StyledListItem = styled(ListItem)({
@@ -45,11 +47,17 @@ const StyledListItem = styled(ListItem)({
 })
 
 const NavigationItemList = ({ list }: { list: NavigationItemType[] }) => {
+
     return (
         <List dense sx={{ display: 'flex', flexDirection: 'column', gap: '8px', p: 0 }}>
             {list.map((item, index) => (
                 <StyledListItem key={index}>
-                    <ListItemButton component={NavLink} to={item.link} sx={{ p: 0 }}>
+                    <ListItemButton
+                     component={item.link === 'logout' ? 'button' : NavLink}
+                      to={item.link === 'logout' ? "#" : item.link}
+                      onClick={item.onClick}
+                       sx={{ p: 0 }}
+                    >
                         <ListItemIcon sx={{ minWidth: 0, mr: '12px' }}>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.text} sx={{ m: 0 }} />
                     </ListItemButton>
@@ -60,10 +68,13 @@ const NavigationItemList = ({ list }: { list: NavigationItemType[] }) => {
 }
 
 export const MenuContent: React.FC<{notificationState: boolean}> = ({notificationState}) => {
+    const { disconnect } = useWallet()
     const navigate = useNavigate()
     const handleLogout = () => {
+        console.log('Logging out...');
         localStorage.removeItem('token')
         sessionStorage.removeItem('address')
+        disconnect()
 
         navigate('/')
     }
