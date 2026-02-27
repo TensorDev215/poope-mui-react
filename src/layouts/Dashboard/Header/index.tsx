@@ -14,20 +14,20 @@ import { HeaderText } from "@/layouts/components/HeaderText"
 import { Link } from "react-router-dom"
 
 import { ROUTES } from "@/constants/routes"
+import { useAvatar } from "@/context/AvatarContext"
 
 
 const Header: React.FC<{notificationState: boolean}> = ({notificationState}) => {
+
+    const { avatarUrl } = useAvatar()
+    
     const [isSticky, setIsSticky] = useState<boolean>(false)
     const { isMobile } = useDeviceType()
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
 
-    // const [notification, setNotifcation] = useState<boolean>(notificationState)
-    // console.log("sdfasdfasdfasdf", notification)
-
     const toggleDrawer = useCallback(() => {
         setSidebarOpen(pre => !pre)
     }, [])
-
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -113,7 +113,7 @@ const Header: React.FC<{notificationState: boolean}> = ({notificationState}) => 
                             </Link>
                         </IconButton>
 
-                        <Avatar alt='Avatar' src='assets/images/avatar.png' sx={{ border: '2px solid' }} />
+                        <Avatar alt='Avatar' src={avatarUrl} sx={{ border: '2px solid' }} />
                     </Stack>
                 </Stack>
             </Stack>

@@ -14,6 +14,7 @@ import Hamburger from '@/components/Hamburger'
 import ConnectDialog from '@/layouts/components/ConnectDialog'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { disconnect } from 'process'
+import { useToast } from '@/context/ToastContext'
 
 const mainListItems: MenuListType[] = [
     { link: 'about', text: 'About' },
@@ -29,6 +30,8 @@ const apiURI = process.env.REACT_API_URI
 
 
 export const Header = () => {
+
+    const { showToast } = useToast()
     const { connected, disconnect, publicKey, wallet } = useWallet()
 
     const walletAddress = publicKey ? publicKey.toString() : ''
@@ -53,7 +56,9 @@ export const Header = () => {
     const disconnectWallet = () => {
         localStorage.removeItem("token")
         localStorage.removeItem("address")
+        localStorage.removeItem("image")
         disconnect()
+        showToast("Alert! Your wallet was stopped.", "error")
     }
 
     useEffect(() => {
@@ -97,8 +102,14 @@ export const Header = () => {
                 const result = await response.json()
                 localStorage.setItem('token', result.access_token)
                 localStorage.setItem('address', result.address)
+
+                 //   setAvatarUrl(`${process.env.REACT_API_URI}/static/uploads/${data.filename}`);
+                localStorage.setItem('image', `${process.env.REACT_API_URI}/static/uploads/${result.image}`)
+                showToast("Success! Your wallet was joined.", "success")
             } catch (err) {
+
                 err instanceof Error ? setError(err) : setError(new Error("An unknow error occured"))
+                showToast("An unknow error occured.", "error")
             }
         }
 

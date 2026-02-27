@@ -71,7 +71,7 @@ export const MenuContent: React.FC<{notificationState: boolean}> = ({notificatio
     const { disconnect } = useWallet()
     const navigate = useNavigate()
     const handleLogout = () => {
-        console.log('Logging out...');
+        
         localStorage.removeItem('token')
         sessionStorage.removeItem('address')
         disconnect()
