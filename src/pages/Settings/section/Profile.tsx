@@ -4,6 +4,7 @@ import ImageUploadBox from './components/ImageUploadBox'
 import { colors } from '@/theme/themePrimitives'
 import { getAuthHeader } from '@/hooks/useFetch'
 import { ReceiveMessageType } from '@/types'
+import { useToast } from '@/context/ToastContext'
 
 const apiURI = process.env.REACT_API_URI
 
@@ -47,6 +48,8 @@ interface fetchProfileTypes {
 const Profile = () => {
     const address = localStorage.getItem('address')
 
+    const {showToast} = useToast()
+
     const [data, setData] = useState<string>('')
 
 
@@ -77,6 +80,7 @@ const Profile = () => {
                 email: result.email,
                 image: result.image
             })
+            showToast("Success! Your profile info was downloaded.", "success")
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to fetch profile.'))
         } finally {
@@ -112,6 +116,7 @@ const Profile = () => {
             }
             const result: ReceiveMessageType = await response.json()
             setData(result.message)
+            showToast("Success! Your profile info was updated.", "success")
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to fetch profile.'))
         } finally {
