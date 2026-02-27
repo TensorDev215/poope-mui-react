@@ -12,6 +12,7 @@ import { TransactionPropsType } from '@/types'
 import { getAuthHeader } from '@/hooks/useFetch'
 import { shortenString } from '@/utils'
 import { Loading } from '../Loading'
+import { useToast } from '@/context/ToastContext'
 
 const apiURI = process.env.REACT_API_URI
 
@@ -36,6 +37,8 @@ interface NoitificationType {
 const Notification = () => {
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<Error | null>(null)
+
+    const {showToast} = useToast()
 
     const [notifications, setNotifications] = useState<NoitificationType[] | null>(null)
 
@@ -64,7 +67,7 @@ const Notification = () => {
             })
 
             setNotifications(convertedResult.reverse())
-            console.log(notifications)
+            showToast("Success! Your notifications were showed.", "success")
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to fetch transations'))
         } finally {

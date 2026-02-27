@@ -14,7 +14,7 @@ export const getAuthHeader = (): Headers => {
         throw new Error('No authentication token found')
     }
 
-    headers.append('Content-Type', `application/json`)
+    // headers.append('Content-Type', `application/json`)
     headers.append('Authorization', `Bearer ${token}`)
     return headers
 }

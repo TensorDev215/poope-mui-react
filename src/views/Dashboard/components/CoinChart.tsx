@@ -1,4 +1,5 @@
 import { chartData } from '@/constants'
+import { useToast } from '@/context/ToastContext'
 import { getAuthHeader } from '@/hooks/useFetch'
 import { colors } from '@/theme/themePrimitives'
 import { AreaPlot, BarPlot, ChartsYAxis, LinePlot, MarkPlot, ResponsiveChartContainer } from '@mui/x-charts'
@@ -18,6 +19,7 @@ interface CoinDataProps {
 // @main.route("/api/coin", methods=['GET'])
 
 export const CoinChart = ({ chartType, dataRangeType }: CoinChartProps) => {
+    const {showToast} = useToast()
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<Error | null>(null)
     const [closeValues, setCloseValues] = useState<number[] | null>(null)
@@ -37,6 +39,7 @@ export const CoinChart = ({ chartType, dataRangeType }: CoinChartProps) => {
             const result: CoinDataProps = await response.json()
 
             setCloseValues(result.data.map(entry => entry[4]))
+            showToast("Success! Coin prices were downloaded.", "success")
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Falid to fetch notifications'))
         } finally {

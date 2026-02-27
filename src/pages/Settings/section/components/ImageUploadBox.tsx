@@ -1,88 +1,112 @@
-import React, { useRef, useState } from 'react';
-import { Box, Stack, Button } from '@mui/material';
-import { Upload, Delete } from '@mui/icons-material';
+import React, { useRef, useState, useEffect } from 'react'
+import { Box, Stack, Button } from '@mui/material'
+import { Upload, Delete } from '@mui/icons-material'
+import { getAuthHeader } from '@/hooks/useFetch'
+import { useAvatar } from '@/context/AvatarContext'
+import { useToast } from '@/context/ToastContext'
 
-const DEFAULT_IMAGE = "/assets/images/avatar.png";
+const apiURI = process.env.REACT_API_URI
+
 
 const ImageUploadBox: React.FC = () => {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [image, setImage] = useState<string>(DEFAULT_IMAGE);
+    const fileInputRef = useRef<HTMLInputElement | null>(null)
+    const { avatarUrl, setAvatarUrl } = useAvatar()
+    const [ image, setImage ] = useState<string>(avatarUrl)
 
-  const handleSelectFile = () => {
-    fileInputRef.current?.click();
-  };
 
-  const handlefileUpload = () => {
-    
-  }
+    const {showToast} = useToast()
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+    const [file, setFile] = useState<File | undefined>(undefined)
 
-    const imageUrl = URL.createObjectURL(file);
-    setImage(imageUrl);
-  };
+    const handleSelectFile = () => {
+        fileInputRef.current?.click()
+    }
 
-  const handleDelete = () => {
-    setImage(DEFAULT_IMAGE);
-  };
+    const handlefileUpload = async () => {
+        if (!file) return
 
-  return (
-    <Box
-      sx={{
-        maxWidth: 320,
-        border: '1px dashed #ccc',
-        borderRadius: 2,
-        p: 3,
-        textAlign: 'center',
-      }}
-    >
-      <Box
-        component="img"
-        src={image}
-        alt="Profile"
-        onClick={handleSelectFile}
-        sx={{
-          maxWidth: 200,
-          maxHeight: 200,
-          borderRadius: '50%',  // 🔥 Makes it rounded
-          objectFit: 'cover',
-          cursor: 'pointer',
-          mx: 'auto',
-          display: 'block',
-          mb: 3,
-        }}
-      />
+        const formData = new FormData()
+        formData.append('file', file)
 
-      <Stack direction="row" spacing={2} justifyContent="center">
-        <Button
-          variant="contained"
-          startIcon={<Upload />}
-          onClick={handlefileUpload}
+        try {
+            const response = await fetch(apiURI + '/api/upload', {
+                method: 'POST',
+                headers: getAuthHeader(),
+                body: formData
+            })
+
+            if (response.ok) {
+                const data = await response.json()
+                showToast("Success! Your avatar was updated.", "success")
+                localStorage.setItem('image', data.filename)
+                setAvatarUrl(`${process.env.REACT_API_URI}/static/uploads/${data.filename}`);
+                
+            } else {
+                showToast("Error! Your avatar was not updated.", "error")
+            }
+        } catch (error) {
+            console.error('Error during upload:', error)
+        }
+    }
+
+    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const image_file = event.target.files?.[0]
+
+        if (image_file) {
+            setFile(image_file)
+            const imageUrl = URL.createObjectURL(image_file)
+            setImage(imageUrl)
+        }
+    }
+
+    const handleDelete = () => {
+        const storedImage = localStorage.getItem('image')
+        if (storedImage) {
+            setAvatarUrl(`${process.env.REACT_API_URI}/static/uploads/${storedImage}`)
+        }
+        setFile(undefined)
+    }
+
+    return (
+        <Box
+            sx={{
+                maxWidth: 320,
+                border: '1px dashed #ccc',
+                borderRadius: 2,
+                p: 3,
+                textAlign: 'center'
+            }}
         >
-          Upload
-        </Button>
+            <Box
+                component='img'
+                src={image}
+                alt='Profile'
+                onClick={handleSelectFile}
+                sx={{
+                    maxWidth: 200,
+                    maxHeight: 200,
+                    borderRadius: '50%', // 🔥 Makes it rounded
+                    objectFit: 'cover',
+                    cursor: 'pointer',
+                    mx: 'auto',
+                    display: 'block',
+                    mb: 3
+                }}
+            />
 
-        <Button
-          variant="outlined"
-          color="error"
-          startIcon={<Delete />}
-          onClick={handleDelete}
-        >
-          Delete
-        </Button>
-      </Stack>
+            <Stack direction='row' spacing={2} justifyContent='center'>
+                <Button variant='contained' startIcon={<Upload />} onClick={handlefileUpload}>
+                    Upload
+                </Button>
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        hidden
-        onChange={handleImageUpload}
-      />
-    </Box>
-  );
-};
+                <Button variant='outlined' color='error' startIcon={<Delete />} onClick={handleDelete}>
+                    Delete
+                </Button>
+            </Stack>
 
-export default ImageUploadBox;
+            <input ref={fileInputRef} type='file' accept='image/*' hidden onChange={handleImageUpload} />
+        </Box>
+    )
+}
+
+export default ImageUploadBox
