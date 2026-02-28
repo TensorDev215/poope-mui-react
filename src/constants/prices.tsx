@@ -1,12 +1,11 @@
-import AppIcon from "@/components/AppIcon"
-import { size } from "lodash"
+import AppIcon from '@/components/AppIcon'
 import { BsArrowDown } from 'react-icons/bs'
 import { IoMdAdd } from 'react-icons/io'
 
 export const percents = [
     {
         text: 'Today',
-        percent: 1.2  
+        percent: 1.2
     },
     {
         text: '7 Days',

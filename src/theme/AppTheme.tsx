@@ -4,7 +4,6 @@ import { colorSchemes, breakpoints, typography } from './themePrimitives'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { customizations } from './customizations'
 
-
 interface AppThemeProps {
     children: React.ReactNode
 }
@@ -12,7 +11,7 @@ interface AppThemeProps {
 export default function AppTheme(props: AppThemeProps) {
     const { children } = props
     const theme = useMemo(
-        () => 
+        () =>
             createTheme({
                 cssVariables: {
                     colorSchemeSelector: 'data-mui-color-scheme',
@@ -22,9 +21,10 @@ export default function AppTheme(props: AppThemeProps) {
                 breakpoints,
                 typography,
                 components: customizations
-            }), []
+            }),
+        []
     )
-    
+
     return (
         <ThemeProvider theme={theme} disableTransitionOnChange>
             {children}

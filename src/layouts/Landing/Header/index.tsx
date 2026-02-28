@@ -5,7 +5,7 @@ import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { NavContent, HeaderLogo } from '@/layouts/components'
-import { Box, Button, Drawer, IconButton, StepConnector } from '@mui/material'
+import { Box, Button, Drawer } from '@mui/material'
 import { MenuListType } from '@/types'
 import AppIcon from '@/components/AppIcon'
 import ColorModeIcon from '@/theme/ColorModeIcon'
@@ -13,7 +13,6 @@ import Hamburger from '@/components/Hamburger'
 
 import ConnectDialog from '@/layouts/components/ConnectDialog'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { disconnect } from 'process'
 import { useToast } from '@/context/ToastContext'
 
 const mainListItems: MenuListType[] = [
@@ -24,17 +23,13 @@ const mainListItems: MenuListType[] = [
     { link: 'faq', text: 'FAQ' }
 ]
 
-
-
 const apiURI = process.env.REACT_API_URI
 
-
 export const Header = () => {
-
     const { showToast } = useToast()
-    const { connected, disconnect, publicKey, wallet } = useWallet()
+    const { connected, disconnect, publicKey } = useWallet()
 
-    const walletAddress = publicKey ? publicKey.toString() : ''
+    // const walletAddress = publicKey ? publicKey.toString() : ''
 
     const [isSticky, setIsSticky] = useState<boolean>(false)
     const [menuOpen, setMenuOpen] = useState<boolean>(false)
@@ -54,11 +49,11 @@ export const Header = () => {
     }
 
     const disconnectWallet = () => {
-        localStorage.removeItem("token")
-        localStorage.removeItem("address")
-        localStorage.removeItem("image")
+        localStorage.removeItem('token')
+        localStorage.removeItem('address')
+        localStorage.removeItem('image')
         disconnect()
-        showToast("Alert! Your wallet was stopped.", "error")
+        showToast('Alert! Your wallet was stopped.', 'error')
     }
 
     useEffect(() => {
@@ -77,12 +72,9 @@ export const Header = () => {
         setMenuOpen(false)
     }, [])
 
-
-    const [error, setError] = useState<Error | null>(null)
     const navigate = useNavigate()
 
     useEffect(() => {
-        
         const fetchData = async () => {
             try {
                 const payload = {
@@ -91,32 +83,31 @@ export const Header = () => {
                 const response = await fetch(apiURI + '/api/connect', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(payload)
                 })
 
                 if (!response.ok) {
-                    throw new Error("Network response was not ok")
+                    throw new Error('Network response was not ok')
                 }
                 const result = await response.json()
                 localStorage.setItem('token', result.access_token)
                 localStorage.setItem('address', result.address)
 
-                 //   setAvatarUrl(`${process.env.REACT_API_URI}/static/uploads/${data.filename}`);
+                //   setAvatarUrl(`${process.env.REACT_API_URI}/static/uploads/${data.filename}`);
                 localStorage.setItem('image', `${process.env.REACT_API_URI}/static/uploads/${result.image}`)
-                showToast("Success! Your wallet was joined.", "success")
+                showToast('Success! Your wallet was joined.', 'success')
             } catch (err) {
-
-                err instanceof Error ? setError(err) : setError(new Error("An unknow error occured"))
-                showToast("An unknow error occured.", "error")
+                console.log(err)
+                showToast('An unknow error occured.', 'error')
             }
         }
 
         if (connected) {
             fetchData()
         } else {
-            navigate("/")
+            navigate('/')
         }
     }, [publicKey, navigate])
 
@@ -164,7 +155,7 @@ export const Header = () => {
                         variant='contained'
                         color='primary'
                         startIcon={<AppIcon name='wallet' />}
-                        onClick={connected ? disconnectWallet: handleConnectClick }
+                        onClick={connected ? disconnectWallet : handleConnectClick}
                         sx={{ width: '100%' }}
                     >
                         {connected ? 'Disconnect' : 'Connect'}
@@ -215,7 +206,7 @@ export const Header = () => {
                             sx={{
                                 display: { lg: 'inline-flex', xs: 'none' }
                             }}
-                             onClick={connected ? disconnectWallet: handleConnectClick}
+                            onClick={connected ? disconnectWallet : handleConnectClick}
                         >
                             {connected ? 'Disconnect' : 'Connect'}
                         </Button>

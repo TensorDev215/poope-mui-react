@@ -25,27 +25,27 @@ import CalendarIcon from '@/assets/icons/calendar.svg'
 import NonNotification from '@/assets/icons/non-notification.svg'
 
 export const ICON_MAP = {
-  sun: SunIcon,
-  moon: MoonIcon,
-  wallet: WalletIcon,
-  down: DownIcon,
-  mouse: MouseIcon,
-  arrowDown: ArrowDownIcon,
-  metamask: MetamaskIcon,
-  phantom: PhantomIcon,
-  solflare: SolflareIcon,
-  more: MoreIcon,
-  dashboard: DashboardIcon,
-  transactions: TransactionsIcon,
-  market: MarketIcon,
-  notification: NotificationIcon,
-  nonNotification: NonNotification,
-  settings: SettingsIcon,
-  support: SupportIcon,
-  logout: LogoutIcon,
-  right: RightIcon,
-  add: AddIcon,
-  calendar: CalendarIcon
+    sun: SunIcon,
+    moon: MoonIcon,
+    wallet: WalletIcon,
+    down: DownIcon,
+    mouse: MouseIcon,
+    arrowDown: ArrowDownIcon,
+    metamask: MetamaskIcon,
+    phantom: PhantomIcon,
+    solflare: SolflareIcon,
+    more: MoreIcon,
+    dashboard: DashboardIcon,
+    transactions: TransactionsIcon,
+    market: MarketIcon,
+    notification: NotificationIcon,
+    nonNotification: NonNotification,
+    settings: SettingsIcon,
+    support: SupportIcon,
+    logout: LogoutIcon,
+    right: RightIcon,
+    add: AddIcon,
+    calendar: CalendarIcon
 }
 
 export type IconName = keyof typeof ICON_MAP
@@ -57,7 +57,7 @@ interface AppIconProps {
 }
 
 const AppIcon: FC<AppIconProps> = ({ name, size = 20, color, ...props }) => {
-    const IconComponent = ICON_MAP[name];
+    const IconComponent = ICON_MAP[name]
 
     return (
         <Stack

@@ -1,20 +1,30 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState } from 'react'
 import { Box, Stack, Button } from '@mui/material'
 import { Upload, Delete } from '@mui/icons-material'
-import { getAuthHeader } from '@/hooks/useFetch'
 import { useAvatar } from '@/context/AvatarContext'
 import { useToast } from '@/context/ToastContext'
 
 const apiURI = process.env.REACT_API_URI
 
+const getImageAuthHeader = (): Headers => {
+    const token = localStorage.getItem('token')
+    const headers = new Headers()
+
+    if (!token) {
+        throw new Error('No authentication token found')
+    }
+
+    headers.append('Authorization', `Bearer ${token}`)
+    
+return headers
+}
 
 const ImageUploadBox: React.FC = () => {
     const fileInputRef = useRef<HTMLInputElement | null>(null)
     const { avatarUrl, setAvatarUrl } = useAvatar()
-    const [ image, setImage ] = useState<string>(avatarUrl)
+    const [image, setImage] = useState<string>(avatarUrl)
 
-
-    const {showToast} = useToast()
+    const { showToast } = useToast()
 
     const [file, setFile] = useState<File | undefined>(undefined)
 
@@ -31,18 +41,17 @@ const ImageUploadBox: React.FC = () => {
         try {
             const response = await fetch(apiURI + '/api/upload', {
                 method: 'POST',
-                headers: getAuthHeader(),
+                headers: getImageAuthHeader(),
                 body: formData
             })
 
             if (response.ok) {
                 const data = await response.json()
-                showToast("Success! Your avatar was updated.", "success")
+                showToast('Success! Your avatar was updated.', 'success')
                 localStorage.setItem('image', data.filename)
-                setAvatarUrl(`${process.env.REACT_API_URI}/static/uploads/${data.filename}`);
-                
+                setAvatarUrl(`${process.env.REACT_API_URI}/static/uploads/${data.filename}`)
             } else {
-                showToast("Error! Your avatar was not updated.", "error")
+                showToast('Error! Your avatar was not updated.', 'error')
             }
         } catch (error) {
             console.error('Error during upload:', error)
@@ -60,10 +69,10 @@ const ImageUploadBox: React.FC = () => {
     }
 
     const handleDelete = () => {
-        const storedImage = localStorage.getItem('image')
-        if (storedImage) {
-            setAvatarUrl(`${process.env.REACT_API_URI}/static/uploads/${storedImage}`)
-        }
+        // const storedImage = localStorage.getItem('image')
+        // if (storedImage) {
+        //     setAvatarUrl(`${process.env.REACT_API_URI}/static/uploads/${storedImage}`)
+        // }
         setFile(undefined)
     }
 

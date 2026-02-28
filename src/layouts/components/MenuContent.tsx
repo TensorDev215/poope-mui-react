@@ -1,14 +1,12 @@
-import { List, Stack, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { NavigationItemType } from "@/types";
+import { List, Stack, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { NavigationItemType } from '@/types'
 
-import { styled } from "@mui/material";
-import { colors } from "@/theme/themePrimitives";
+import { styled } from '@mui/material'
+import { colors } from '@/theme/themePrimitives'
 
-import { NavLink, useNavigate } from "react-router-dom";
-import { SideBarMenuListItems, SideBarSubListItems, secondSideBarMenuListItems } from "@/constants/sidebarlist";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { disconnect } from "process";
-
+import { NavLink, useNavigate } from 'react-router-dom'
+import { SideBarMenuListItems, SideBarSubListItems, secondSideBarMenuListItems } from '@/constants/sidebarlist'
+import { useWallet } from '@solana/wallet-adapter-react'
 
 const StyledListItem = styled(ListItem)({
     display: 'block',
@@ -47,16 +45,15 @@ const StyledListItem = styled(ListItem)({
 })
 
 const NavigationItemList = ({ list }: { list: NavigationItemType[] }) => {
-
     return (
         <List dense sx={{ display: 'flex', flexDirection: 'column', gap: '8px', p: 0 }}>
             {list.map((item, index) => (
                 <StyledListItem key={index}>
                     <ListItemButton
-                     component={item.link === 'logout' ? 'button' : NavLink}
-                      to={item.link === 'logout' ? "#" : item.link}
-                      onClick={item.onClick}
-                       sx={{ p: 0 }}
+                        component={item.link === 'logout' ? 'button' : NavLink}
+                        to={item.link === 'logout' ? '#' : item.link}
+                        onClick={item.onClick}
+                        sx={{ p: 0 }}
                     >
                         <ListItemIcon sx={{ minWidth: 0, mr: '12px' }}>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.text} sx={{ m: 0 }} />
@@ -67,11 +64,10 @@ const NavigationItemList = ({ list }: { list: NavigationItemType[] }) => {
     )
 }
 
-export const MenuContent: React.FC<{notificationState: boolean}> = ({notificationState}) => {
+export const MenuContent: React.FC<{ notificationState: boolean }> = ({ notificationState }) => {
     const { disconnect } = useWallet()
     const navigate = useNavigate()
     const handleLogout = () => {
-        
         localStorage.removeItem('token')
         sessionStorage.removeItem('address')
         disconnect()
@@ -86,17 +82,18 @@ export const MenuContent: React.FC<{notificationState: boolean}> = ({notificatio
                 onClick: handleLogout
             }
         }
-        return item
+        
+return item
     })
 
     return (
         <Stack sx={{ flewGrow: 1, height: '100%', justifyContent: 'space-between' }}>
-            {notificationState?
+            {notificationState ? (
                 <NavigationItemList list={SideBarMenuListItems} />
-                :
+            ) : (
                 <NavigationItemList list={secondSideBarMenuListItems} />
-            }
-            
+            )}
+
             <NavigationItemList list={updatedSideBarSubListItems} />
         </Stack>
     )

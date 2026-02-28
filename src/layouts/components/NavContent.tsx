@@ -13,15 +13,15 @@ export function NavContent({ list, handleClick, pop }: NavbarProps) {
     return (
         <Stack
             gap={4}
-            direction={!pop ? 'row': 'column'}
+            direction={!pop ? 'row' : 'column'}
             sx={theme => ({
                 [theme.breakpoints.down('lg')]: !pop
-                ? {
-                    width: '100%',
-                    justifyContent: 'flex-end',
-                    paddingRight: '8px'
-                }
-                : '',
+                    ? {
+                          width: '100%',
+                          justifyContent: 'flex-end',
+                          paddingRight: '8px'
+                      }
+                    : '',
                 alignItems: 'center'
             })}
         >
@@ -36,8 +36,8 @@ export function NavContent({ list, handleClick, pop }: NavbarProps) {
                     alignItems: 'center',
                     [theme.breakpoints.down('lg')]: !pop
                         ? {
-                            display: 'none'
-                        }
+                              display: 'none'
+                          }
                         : '',
                     ...(pop && {
                         flexDirection: 'column'
@@ -62,7 +62,7 @@ export function NavContent({ list, handleClick, pop }: NavbarProps) {
                     </ListItem>
                 ))}
             </List>
-             <LanguagePicker signFontSize='18px' showDrop showLabel/>
+            <LanguagePicker signFontSize='18px' showDrop showLabel />
         </Stack>
     )
 }

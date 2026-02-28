@@ -1,11 +1,10 @@
 import { styled } from '@mui/material/styles'
-import MuiDrawer, { drawerClasses } from "@mui/material/Drawer"
+import MuiDrawer, { drawerClasses } from '@mui/material/Drawer'
 import { HeaderLogo } from '@/layouts/components'
 import { Box, IconButton } from '@mui/material'
 import { colors } from '@/theme/themePrimitives'
 import { TfiClose } from 'react-icons/tfi'
 import { MenuContent } from '@/layouts/components'
-
 
 const drawerWidth = 270
 
@@ -71,4 +70,3 @@ export default function SidebarMobile({ open, toggleDrawer, notificationState }:
         </Drawer>
     )
 }
-
