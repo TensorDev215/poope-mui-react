@@ -2,7 +2,7 @@ import React, { createContext, useState, ReactNode, useContext, useEffect } from
 
 interface AvatarContextType {
     avatarUrl: string
-    setAvatarUrl: (url: string) => void;
+    setAvatarUrl: (url: string) => void
 }
 
 const AvatarContext = createContext<AvatarContextType | undefined>(undefined)
@@ -15,11 +15,7 @@ export const AvatarProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         localStorage.setItem('image', avatarUrl)
     }, [avatarUrl])
 
-    return (
-        <AvatarContext.Provider value={{ avatarUrl, setAvatarUrl }}>
-            { children }
-        </AvatarContext.Provider>
-    )
+    return <AvatarContext.Provider value={{ avatarUrl, setAvatarUrl }}>{children}</AvatarContext.Provider>
 }
 
 export const useAvatar = (): AvatarContextType => {
@@ -27,5 +23,6 @@ export const useAvatar = (): AvatarContextType => {
     if (!context) {
         throw new Error('useAvatar must be uesd within an AvatarProvider')
     }
-    return context
+    
+return context
 }

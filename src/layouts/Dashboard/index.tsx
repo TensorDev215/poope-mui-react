@@ -27,10 +27,6 @@ const DashboardBox = styled(Box)(({ theme }) => ({
 export const DashboardLayout = () => {
     const [notificationState, setNotificationState] = useState(false)
 
-    const triggerAction = () => {
-        setNotificationState(!notificationState)
-    }
-
     const location = useLocation()
 
     useEffect(() => {
@@ -50,11 +46,11 @@ export const DashboardLayout = () => {
 
     return (
         <Box
-            sx={theme => ({
+            sx={{
                 display: 'flex',
                 minHeight: '100vh',
                 background: { md: 'url(/assets/images/bg-pattern.png) repeat', xs: 'none' }
-            })}
+            }}
         >
             <Sidebar notificationState={notificationState} />
             <Stack direction='column' gap={{ md: '18px', xs: '8px' }}>

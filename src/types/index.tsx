@@ -1,12 +1,12 @@
-import { ReactNode } from "react"
+import { ReactNode } from 'react'
 
 export interface SectionPropsType {
     sectionId: string
 }
 
 export interface MenuListType {
-    link: string,
-    text: string,
+    link: string
+    text: string
 }
 
 export interface NavigationItemType {
@@ -25,11 +25,10 @@ export interface ReceiveMessageType {
     message: string
 }
 
-
 export interface TransactionPropsType {
-    id: number,
-    address: string,
-    amount: number,
-    date: string,
+    id: number
+    address: string
+    amount: number
+    date: string
     type: string
 }

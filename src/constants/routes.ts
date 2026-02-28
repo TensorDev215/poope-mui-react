@@ -3,5 +3,5 @@ export const ROUTES = {
     DASHBOARD: '/dashboard',
     TRANSACTIONS: '/transactions',
     NOTIFICATION: '/notification',
-    SETTINGS: '/settings' 
+    SETTINGS: '/settings'
 }

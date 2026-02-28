@@ -2,19 +2,16 @@ import {
     Stack,
     Typography,
     Button,
-    Input,
-    TextField,
     FormControl,
     OutlinedInput,
     InputAdornment,
     Box
 } from '@mui/material'
 import AddIcon from '@/assets/icons/add.svg'
-import TransactionIcon from '@/assets/icons/transactions.svg'
 import DownIcon from '@/assets/icons/down.svg'
 import React, { useState } from 'react'
 import { getAuthHeader } from '@/hooks/useFetch'
-import { SendTransactionPropsType, ReceiveMessageType } from '@/types'
+import { SendTransactionPropsType } from '@/types'
 
 const apiURI = process.env.REACT_API_URI
 
@@ -47,7 +44,6 @@ export const SwapBox = ({ onTransactionComplted }: { onTransactionComplted: () =
         }
     }
 
-    const [data, setData] = useState<ReceiveMessageType | null>(null)
     const [error, setError] = useState<Error | null>(null)
     const [loading, setLoading] = useState<boolean>(true)
     const loadingDelay = 1500
@@ -65,15 +61,15 @@ export const SwapBox = ({ onTransactionComplted }: { onTransactionComplted: () =
             if (!response.ok) {
                 throw new Error('Network response was not ok')
             }
-            const result: ReceiveMessageType = await response.json()
-            setData(result)
             onTransactionComplted()
         } catch (err) {
             setError(err instanceof Error ? err : new Error('An unknown error occured'))
+            console.log(error)
         } finally {
             setTimeout(() => {
                 setLoading(false)
             }, loadingDelay)
+            console.log(loading)
         }
     }
 

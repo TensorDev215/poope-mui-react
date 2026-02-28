@@ -1,7 +1,7 @@
 import HistoryTable from '@/views/Transaction/HistoryTable'
 import { SwapBox } from '@/views/Transaction/SwapBox'
 
-import { Box, styled, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { TransactionPropsType } from '@/types'
 import { getAuthHeader } from '@/hooks/useFetch'
@@ -32,7 +32,7 @@ const Transaction = () => {
             }
             const result: TransactionPropsType[] = await response.json()
             setTransactions(result)
-            showToast("Success! Your transactions were showed.", "success")
+            showToast('Success! Your transactions were showed.', 'success')
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to fetch transations'))
         } finally {

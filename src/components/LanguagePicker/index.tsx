@@ -1,8 +1,6 @@
-import { ButtonBase, Stack, Typography } from "@mui/material"
+import { ButtonBase, Stack, Typography } from '@mui/material'
 import ReactCountryFlag from 'react-country-flag'
-import { useState } from "react"
-import AppIcon from "../AppIcon"
-
+import AppIcon from '../AppIcon'
 
 interface LanguagePickerPropsType {
     signFontSize?: string
@@ -10,23 +8,20 @@ interface LanguagePickerPropsType {
     showLabel?: boolean
 }
 
-const LanguagePicker = ({ signFontSize, showDrop, showLabel }: LanguagePickerPropsType) => {
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+const LanguagePicker = ({ signFontSize, showLabel }: LanguagePickerPropsType) => {
 
     return (
         <Stack direction='row' alignItems='center'>
-            <ButtonBase
-                id='language-picker-button'
-            >
+            <ButtonBase id='language-picker-button'>
                 <ReactCountryFlag
-                    countryCode="US"
+                    countryCode='US'
                     style={{
                         width: '1rem',
                         height: '1rem',
                         borderRadius: '100px',
                         objectFit: 'cover'
                     }}
-                    title="US"
+                    title='US'
                     svg
                 />
                 {showLabel && (
@@ -34,10 +29,9 @@ const LanguagePicker = ({ signFontSize, showDrop, showLabel }: LanguagePickerPro
                         EN
                     </Typography>
                 )}
- 
+
                 <AppIcon name='down' />
             </ButtonBase>
-
         </Stack>
     )
 }

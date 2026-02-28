@@ -1,26 +1,24 @@
-import { AppBar, Stack, Typography, Button, IconButton, Avatar } from "@mui/material"
-import { useEffect, useState, useCallback } from "react"
+import { AppBar, Stack, Typography, Button, IconButton, Avatar } from '@mui/material'
+import { useEffect, useState, useCallback } from 'react'
 import { FiChevronRight } from 'react-icons/fi'
-import LanguagePicker from "@/components/LanguagePicker"
-import AppIcon from "@/components/AppIcon"
+import LanguagePicker from '@/components/LanguagePicker'
+import AppIcon from '@/components/AppIcon'
 
-import { useDeviceType } from "@/hooks"
+import { useDeviceType } from '@/hooks'
 import { IoMenuSharp, IoSearchOutline } from 'react-icons/io5'
-import ColorModeIcon from "@/theme/ColorModeIcon"
-import { SearchInput } from "@/components/Inputs"
-import { HeaderLogo } from "@/layouts/components"
-import SidebarMobile from "../Sidebar/SideBarMobile"
-import { HeaderText } from "@/layouts/components/HeaderText"
-import { Link } from "react-router-dom"
+import ColorModeIcon from '@/theme/ColorModeIcon'
+import { SearchInput } from '@/components/Inputs'
+import { HeaderLogo } from '@/layouts/components'
+import SidebarMobile from '../Sidebar/SideBarMobile'
+import { HeaderText } from '@/layouts/components/HeaderText'
+import { Link } from 'react-router-dom'
 
-import { ROUTES } from "@/constants/routes"
-import { useAvatar } from "@/context/AvatarContext"
+import { ROUTES } from '@/constants/routes'
+import { useAvatar } from '@/context/AvatarContext'
 
-
-const Header: React.FC<{notificationState: boolean}> = ({notificationState}) => {
-
+const Header: React.FC<{ notificationState: boolean }> = ({ notificationState }) => {
     const { avatarUrl } = useAvatar()
-    
+
     const [isSticky, setIsSticky] = useState<boolean>(false)
     const { isMobile } = useDeviceType()
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
@@ -32,20 +30,20 @@ const Header: React.FC<{notificationState: boolean}> = ({notificationState}) => 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             window.addEventListener('scroll', () => {
-                setIsSticky(window.pageYOffset > 18) 
+                setIsSticky(window.pageYOffset > 18)
             })
         }
     }, [])
 
-    return(
+    return (
         <AppBar
-            position="sticky"
+            position='sticky'
             elevation={0}
             sx={{
                 boxShadow: 0,
                 backgroundImage: 'none',
                 borderBottom: 'none',
-                
+
                 width: { md: 'calc(100vw - 220px)', xs: '100vw' },
                 marginLeft: { md: '220px', xs: '0' },
                 backgroundColor: 'transparent !important',
@@ -53,47 +51,51 @@ const Header: React.FC<{notificationState: boolean}> = ({notificationState}) => 
                 backdropFilter: 'none',
 
                 ...(isSticky && {
-                backgroundColor: 'none'
-            })
-        }}
+                    backgroundColor: 'none'
+                })
+            }}
         >
-            <Stack direction="row" gap={4} alignItems='center' flexDirection={{ md: 'row', xs: 'column-reverse' }}>
+            <Stack direction='row' gap={4} alignItems='center' flexDirection={{ md: 'row', xs: 'column-reverse' }}>
                 <Stack direction='row' alignItems='center' width='100%' gap={2}>
-                    <Typography component={'h2'} variant="subtitle1" fontWeight={500} sx={{ flexGrow: 1, textTransform: 'capitalize' }}>
+                    <Typography
+                        component={'h2'}
+                        variant='subtitle1'
+                        fontWeight={500}
+                        sx={{ flexGrow: 1, textTransform: 'capitalize' }}
+                    >
                         <HeaderText />
                     </Typography>
-                    <LanguagePicker signFontSize="14px" showLabel={!isMobile} />
+                    <LanguagePicker signFontSize='14px' showLabel={!isMobile} />
 
                     <Button
-                        variant="text"
-                        color="secondary"
+                        variant='text'
+                        color='secondary'
                         endIcon={<FiChevronRight size={16} />}
-                        sx={{ minWidth: '0',
+                        sx={{
+                            minWidth: '0',
                             '& .MuiButton-icon': {
                                 ...(isMobile && {
                                     margin: 0
                                 })
                             }
-                         }}
+                        }}
                     >
                         {!isMobile && 'Manage'}
                     </Button>
                 </Stack>
 
                 <Stack direction='row' justifyContent='space-between' width={{ md: 'auto', xs: '100%' }}>
-                    {
-                        isMobile && (
-                            <Stack direction='row' gap={1} alignItems='center'>
-                                <IconButton color="inherit" sx={{p: 0, border: 0}} onClick={toggleDrawer}>
-                                    <IoMenuSharp />
-                                </IconButton>
-                                <HeaderLogo disableText />
-                            </Stack>
-                        )
-                    }
+                    {isMobile && (
+                        <Stack direction='row' gap={1} alignItems='center'>
+                            <IconButton color='inherit' sx={{ p: 0, border: 0 }} onClick={toggleDrawer}>
+                                <IoMenuSharp />
+                            </IconButton>
+                            <HeaderLogo disableText />
+                        </Stack>
+                    )}
                     <Stack direction='row' gap={{ md: 2, xs: 0.5 }} alignItems='center'>
                         {isMobile && <ColorModeIcon sx={{ border: 'none' }} />}
-                        
+
                         {isMobile ? (
                             <IconButton sx={{ padding: '8px', border: 0 }}>
                                 <IoSearchOutline size={24} />
@@ -105,11 +107,11 @@ const Header: React.FC<{notificationState: boolean}> = ({notificationState}) => 
                         {!isMobile && <ColorModeIcon sx={{ border: 'none' }} />}
                         <IconButton sx={{ padding: '8px', border: 0 }}>
                             <Link to={ROUTES.NOTIFICATION}>
-                                {notificationState?
-                                    <AppIcon name="notification" size={24} />
-                                    :
-                                    <AppIcon name="nonNotification" size={24} />
-                                }
+                                {notificationState ? (
+                                    <AppIcon name='notification' size={24} />
+                                ) : (
+                                    <AppIcon name='nonNotification' size={24} />
+                                )}
                             </Link>
                         </IconButton>
 
@@ -121,7 +123,6 @@ const Header: React.FC<{notificationState: boolean}> = ({notificationState}) => 
             <SidebarMobile open={sidebarOpen} toggleDrawer={toggleDrawer} notificationState={notificationState} />
         </AppBar>
     )
-
 }
 
 export default Header

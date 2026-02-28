@@ -1,21 +1,21 @@
-import { Typography, Stack } from "@mui/material"
-import { useMemo } from "react"
-import { toNumberTag } from "@/utils"
+import { Typography, Stack } from '@mui/material'
+import { useMemo } from 'react'
+import { toNumberTag } from '@/utils'
 import { LuMoveUpRight, LuMoveDownRight } from 'react-icons/lu'
-import { colors } from "@/theme/themePrimitives"
-import { alpha } from "@mui/material"
+import { colors } from '@/theme/themePrimitives'
+import { alpha } from '@mui/material'
 
 interface EvaluateRateProps {
-    percent: number,
-    type?: 'contained' | 'outlined' 
+    percent: number
+    type?: 'contained' | 'outlined'
 }
 
 const EvaluateRate = ({ percent, type }: EvaluateRateProps) => {
-    
-    const formattedPercent = useMemo(() => toNumberTag(percent, 5, percent > 0 ? '+': '-', '%'), [percent])
-    const buttonType = useMemo(() => (percent > 0 ? 'success': 'failed'), [percent])
+    const formattedPercent = useMemo(() => toNumberTag(percent, 5, percent > 0 ? '+' : '-', '%'), [percent])
+    const buttonType = useMemo(() => (percent > 0 ? 'success' : 'failed'), [percent])
     const iconButton = useMemo(
-        () => (percent > 0 ? <LuMoveUpRight fontSize='16px' /> : <LuMoveDownRight fontSize='16px' />), [percent]
+        () => (percent > 0 ? <LuMoveUpRight fontSize='16px' /> : <LuMoveDownRight fontSize='16px' />),
+        [percent]
     )
 
     return (
@@ -35,27 +35,27 @@ const EvaluateRate = ({ percent, type }: EvaluateRateProps) => {
                         borderColor: 'transparent',
                         background: colors[buttonType],
                         color: colors['white']
-                })
+                    })
                 }),
 
                 ...(type === 'outlined' && {
-                background: 'transparent',
-                border: 'none',
-                color: colors['white'],
+                    background: 'transparent',
+                    border: 'none',
+                    color: colors['white'],
 
-                ...theme.applyStyles('light', {
-                    borderColor: 'transparent',
-                    color: colors['dark']
-                }),
+                    ...theme.applyStyles('light', {
+                        borderColor: 'transparent',
+                        color: colors['dark']
+                    }),
 
-                '& svg': {
-                    color: colors[buttonType]
-                }
+                    '& svg': {
+                        color: colors[buttonType]
+                    }
                 })
             })}
-            >
-            <Typography component={'p'} variant="subtitle2">
-                { formattedPercent }
+        >
+            <Typography component={'p'} variant='subtitle2'>
+                {formattedPercent}
             </Typography>
             {iconButton}
         </Stack>

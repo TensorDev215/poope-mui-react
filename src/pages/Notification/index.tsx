@@ -7,11 +7,10 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { TransactionPropsType } from '@/types'
 import { getAuthHeader } from '@/hooks/useFetch'
 import { shortenString } from '@/utils'
-import { Loading } from '../Loading'
 import { useToast } from '@/context/ToastContext'
 
 const apiURI = process.env.REACT_API_URI
@@ -38,13 +37,13 @@ const Notification = () => {
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<Error | null>(null)
 
-    const {showToast} = useToast()
+    const { showToast } = useToast()
 
     const [notifications, setNotifications] = useState<NoitificationType[] | null>(null)
 
     const loadingDelay = 1500
 
-    const fetchTransactions = async () => {
+    const fetchTransactions = useCallback(async () => {
         setLoading(true)
         try {
             const response = await fetch(apiURI + '/api/history', {
@@ -57,37 +56,40 @@ const Notification = () => {
             }
             const results: TransactionPropsType[] = await response.json()
 
-            const convertedResult: NoitificationType[] = []
+            // const convertedResult: NoitificationType[] = []
 
-            results.map(result => {
-                const content =
-                    'This wallet' + ' ' + result.type + ' ' + result.amount + ' Poope' + ' on ' + result.date + '.'
+            // results.map(result => {
+            //     const content =
+            //         'This wallet' + ' ' + result.type + ' ' + result.amount + ' Poope' + ' on ' + result.date + '.'
 
-                convertedResult.push({ id: shortenString(result.address), content: content })
-            })
+            //     convertedResult.push({ id: shortenString(result.address), content: content })
+            // })
+            const convertedResult: NoitificationType[] = results.map(result => ({
+                id: shortenString(result.address),
+                content: `This wallet ${result.type} ${result.amount} Poope on ${result.date}.`
+            }))
 
             setNotifications(convertedResult.reverse())
-            showToast("Success! Your notifications were showed.", "success")
+            showToast('Success! Your notifications were showed.', 'success')
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to fetch transations'))
+            console.log(error)
         } finally {
             setTimeout(() => {
                 setLoading(false)
             }, loadingDelay)
+            console.log(loading)
         }
-    }
+    }, [])
 
     useEffect(() => {
         fetchTransactions()
-    }, [])
-
-    // if (loading) return <Loading />
-    // if (error) return <p>Error: {error.message} </p>
+    }, [fetchTransactions])
 
     const [page, setPage] = React.useState(0)
     const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
-    const handleChangePage = (event: unknown, newPage: number) => {
+    const handleChangePage = (_: unknown, newPage: number) => {
         setPage(newPage)
     }
 
@@ -115,6 +117,7 @@ const Notification = () => {
                                 <TableRow hover role='checkbox' tabIndex={-1} key={row.id}>
                                     {columns.map(column => {
                                         const value = row[column.id]
+
                                         return (
                                             <TableCell key={column.id} align={column.align}>
                                                 {column.format && typeof value === 'number'

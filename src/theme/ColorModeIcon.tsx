@@ -1,7 +1,7 @@
-import { useColorScheme } from "@mui/material";
+import { useColorScheme } from '@mui/material'
 import IconButton, { IconButtonOwnProps } from '@mui/material/IconButton'
 
-import AppIcon from "@/components/AppIcon";
+import AppIcon from '@/components/AppIcon'
 
 export default function ColorModeIcon(props: IconButtonOwnProps) {
     const { mode, setMode } = useColorScheme()

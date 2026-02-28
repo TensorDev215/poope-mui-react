@@ -1,8 +1,7 @@
 import { Section } from '@/components/Section'
-import { styled, Typography } from '@mui/material'
+import { styled } from '@mui/material'
 
-
-const LoadingBox = styled(Section) ({
+const LoadingBox = styled(Section)({
     justifyContent: 'center',
     alignItems: 'center'
 })
@@ -10,7 +9,7 @@ const LoadingBox = styled(Section) ({
 export const Loading = (props: any) => {
     return (
         <LoadingBox sectionId='loading' {...props}>
-            <img src="/assets/images/loading.gif" alt="Loading..." loading='lazy' />
+            <img src='/assets/images/loading.gif' alt='Loading...' loading='lazy' />
         </LoadingBox>
     )
 }

@@ -14,9 +14,10 @@ export const getAuthHeader = (): Headers => {
         throw new Error('No authentication token found')
     }
 
-    // headers.append('Content-Type', `application/json`)
+    headers.append('Content-Type', `application/json`)
     headers.append('Authorization', `Bearer ${token}`)
-    return headers
+    
+return headers
 }
 
 export const useDefaultFetch = <T>(url: string): FetchResult<T> => {
@@ -53,4 +54,3 @@ export const useDefaultFetch = <T>(url: string): FetchResult<T> => {
 
     return { data, error, loading }
 }
-
