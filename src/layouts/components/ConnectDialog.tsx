@@ -1,11 +1,8 @@
 import Dialog from '@mui/material/Dialog'
-import { ROUTES, WalletButtonList } from '@/constants'
-import { Button, DialogContent, DialogTitle, IconButton, Link, Stack, Typography, Box } from '@mui/material'
+import { Button, DialogContent, DialogTitle, IconButton, Stack, Typography } from '@mui/material'
 import { IoMdClose } from 'react-icons/io'
 import { Adapter } from '@solana/wallet-adapter-base'
 import { useWallet } from '@solana/wallet-adapter-react'
-
-const wallets = ['Metamask', 'Phantom', 'Solflare']
 
 export interface ConnectDialogProps {
     open: boolean
@@ -17,7 +14,7 @@ const desiredWalletNames: string[] = ['Phantom', 'Solflare', 'Coinbase Wallet', 
 function ConnectDialog(props: ConnectDialogProps) {
     const { onClose, open } = props
 
-    const { wallets, connected, select } = useWallet()
+    const { wallets, select } = useWallet()
 
     const handleClose = () => {
         onClose()
@@ -34,7 +31,7 @@ function ConnectDialog(props: ConnectDialogProps) {
 
     return (
         <Dialog onClose={handleClose} open={open} fullWidth={false}>
-            <DialogTitle sx={{ paddingTop: '16px', paddingBottom: '16px', position: 'relative'}} component={'div'} >
+            <DialogTitle sx={{ paddingTop: '16px', paddingBottom: '16px', position: 'relative' }} component={'div'}>
                 <Typography variant='subtitle1' textAlign='center'>
                     Connect to your <br /> Solana Wallet
                 </Typography>

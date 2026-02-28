@@ -1,5 +1,3 @@
-
-
 const Updating = () => {
     return (
         <>

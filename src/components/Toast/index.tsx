@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
 import { Snackbar, Alert, AlertColor } from '@mui/material'
 
 interface ToastType {
-    message: string,
-    severity: AlertColor,
-    open?: boolean,
+    message: string
+    severity: AlertColor
+    open?: boolean
     onClose?: () => void
 }
 
@@ -17,13 +16,13 @@ const Toast: React.FC<ToastType> = ({ message, severity = 'success', open, onClo
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         >
             <Alert
-              onClose={onClose}
-              severity={severity}
-               sx={{
+                onClose={onClose}
+                severity={severity}
+                sx={{
                     width: '100%',
-                    padding: '16px', 
-                    borderRadius: '8px', 
-                    fontSize: '16px',
+                    padding: '16px',
+                    borderRadius: '8px',
+                    fontSize: '16px'
                 }}
             >
                 {message}

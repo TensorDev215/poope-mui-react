@@ -1,9 +1,8 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState, useCallback } from 'react'
 import { Box, Stack, Typography, TextField, Button } from '@mui/material'
 import ImageUploadBox from './components/ImageUploadBox'
 import { colors } from '@/theme/themePrimitives'
 import { getAuthHeader } from '@/hooks/useFetch'
-import { ReceiveMessageType } from '@/types'
 import { useToast } from '@/context/ToastContext'
 
 const apiURI = process.env.REACT_API_URI
@@ -12,10 +11,9 @@ interface FormFieldProps {
     label: string
     value?: string
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void
-    name: string 
+    name: string
     disabled?: boolean
 }
-
 
 const FormField: React.FC<FormFieldProps> = ({ label, value, onChange, name, disabled }) => (
     <Box>
@@ -28,11 +26,11 @@ const FormField: React.FC<FormFieldProps> = ({ label, value, onChange, name, dis
             size='small'
             value={value}
             onChange={onChange}
-            name={name} 
+            name={name}
             disabled={disabled}
             sx={{
                 '& .MuiInputBase-input': {
-                    fontSize: '16px' 
+                    fontSize: '16px'
                 }
             }}
         />
@@ -40,29 +38,26 @@ const FormField: React.FC<FormFieldProps> = ({ label, value, onChange, name, dis
 )
 
 interface fetchProfileTypes {
-    name: string,
-    email: string,
-    image: string,
+    name: string
+    email: string
+    image: string
 }
 
 const Profile = () => {
     const address = localStorage.getItem('address')
 
-    const {showToast} = useToast()
-
-    const [data, setData] = useState<string>('')
-
+    const { showToast } = useToast()
 
     const [loading, setLoading] = useState<boolean>(false)
-    const [err, setError] = useState<Error | null>(null)
+    const [error, setError] = useState<Error | null>(null)
 
     const [formData, setFormData] = useState({
         full_name: '',
         email: '',
-        image: '',
+        image: ''
     })
 
-    const fetchProfile = async () => {
+    const fetchProfile = useCallback(async () => {
         setLoading(true)
         try {
             const response = await fetch(apiURI + '/api/get_user', {
@@ -80,19 +75,21 @@ const Profile = () => {
                 email: result.email,
                 image: result.image
             })
-            showToast("Success! Your profile info was downloaded.", "success")
+            showToast('Success! Your profile info was downloaded.', 'success')
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to fetch profile.'))
+            console.log(error)
         } finally {
             setTimeout(() => {
                 setLoading(false)
             }, 1500)
+            console.log(loading)
         }
-    }
+    }, [])
 
     useEffect(() => {
         fetchProfile()
-    }, [])
+    }, [fetchProfile])
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -108,21 +105,17 @@ const Profile = () => {
             const response = await fetch(apiURI + '/api/user_info', {
                 method: 'POST',
                 headers: getAuthHeader(),
-                body: JSON.stringify({name: formData.full_name, email: formData.email})
+                body: JSON.stringify({ name: formData.full_name, email: formData.email })
             })
 
             if (!response.ok) {
                 throw new Error('Network response was not ok')
             }
-            const result: ReceiveMessageType = await response.json()
-            setData(result.message)
-            showToast("Success! Your profile info was updated.", "success")
+            showToast('Success! Your profile info was updated.', 'success')
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to fetch profile.'))
         } finally {
-            setTimeout(() => {
-                setLoading(false)
-            }, 1500)
+            setLoading(false)
         }
     }
 
@@ -133,7 +126,7 @@ const Profile = () => {
                 backgroundColor: colors['dark'],
 
                 ...theme.applyStyles('light', {
-                    backgroundColor: colors['white'],
+                    backgroundColor: colors['white']
                 })
             })}
         >
@@ -148,9 +141,15 @@ const Profile = () => {
                 <ImageUploadBox />
 
                 <Stack spacing={3} flex='1'>
-                    <FormField label='Address' value={address || undefined} onChange={handleChange} name='address' disabled={true} />
+                    <FormField
+                        label='Address'
+                        value={address || undefined}
+                        onChange={handleChange}
+                        name='address'
+                        disabled={true}
+                    />
                     <FormField label='Full Name' value={formData.full_name} onChange={handleChange} name='full_name' />
-                    <FormField label='Email' value={formData.email} onChange={handleChange} name='email'  />
+                    <FormField label='Email' value={formData.email} onChange={handleChange} name='email' />
 
                     <Button variant='contained' color='primary' onClick={handleSave} sx={{ alignSelf: 'flex-end' }}>
                         Save Changes

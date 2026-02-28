@@ -1,8 +1,7 @@
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-
-const PrivateRoute = ({children }: { children: React.ReactNode }) => {
+const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate()
 
     useEffect(() => {

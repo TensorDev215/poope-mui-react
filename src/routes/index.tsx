@@ -1,14 +1,14 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from 'react-router-dom'
 
-import { LandingLayout } from "@/layouts";
+import { LandingLayout } from '@/layouts'
 
-import { DashboardLayout } from "@/layouts/Dashboard";
+import { DashboardLayout } from '@/layouts/Dashboard'
 
-import { lazy } from "react";
+import { lazy } from 'react'
 
-import { ROUTES } from "@/constants";
+import { ROUTES } from '@/constants'
 
-import PrivateRoute from "./PrivateRoute";
+import PrivateRoute from './PrivateRoute'
 
 const Landing = lazy(() => import('@/pages/Landing'))
 
@@ -37,20 +37,36 @@ const router = createBrowserRouter([
         children: [
             {
                 path: ROUTES.DASHBOARD,
-                element: <PrivateRoute><Dashboard /></PrivateRoute>
+                element: (
+                    <PrivateRoute>
+                        <Dashboard />
+                    </PrivateRoute>
+                )
             },
             {
                 path: ROUTES.TRANSACTIONS,
-                element: <PrivateRoute><Transaction /></PrivateRoute>
+                element: (
+                    <PrivateRoute>
+                        <Transaction />
+                    </PrivateRoute>
+                )
             },
             {
                 path: ROUTES.NOTIFICATION,
-                element: <PrivateRoute><Notification /></PrivateRoute>
+                element: (
+                    <PrivateRoute>
+                        <Notification />
+                    </PrivateRoute>
+                )
             },
             {
                 path: ROUTES.SETTINGS,
-                element: <PrivateRoute><Settings /></PrivateRoute>
-            },
+                element: (
+                    <PrivateRoute>
+                        <Settings />
+                    </PrivateRoute>
+                )
+            }
         ]
     }
 ])

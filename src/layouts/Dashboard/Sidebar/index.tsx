@@ -1,12 +1,12 @@
-import { Box, Drawer, drawerClasses } from "@mui/material"
-import { colors } from "@/theme/themePrimitives"
+import { Box, Drawer, drawerClasses } from '@mui/material'
+import { colors } from '@/theme/themePrimitives'
 
-import { HeaderLogo, MenuContent } from "@/layouts/components"
+import { HeaderLogo, MenuContent } from '@/layouts/components'
 
-const Sidebar: React.FC<{notificationState: boolean}> = ({notificationState}) => {
+const Sidebar: React.FC<{ notificationState: boolean }> = ({ notificationState }) => {
     return (
         <Drawer
-            variant="permanent"
+            variant='permanent'
             sx={{
                 display: { xs: 'none', md: 'block' },
                 [`& .${drawerClasses.paper}`]: {
@@ -15,7 +15,7 @@ const Sidebar: React.FC<{notificationState: boolean}> = ({notificationState}) =>
                 }
             }}
         >
-            <HeaderLogo color="#fffffff" />
+            <HeaderLogo color='#fffffff' />
 
             <Box
                 sx={{

@@ -1,7 +1,7 @@
-import { IoSearch } from "react-icons/io5";
+import { IoSearch } from 'react-icons/io5'
 
 import { colors } from '@/theme/themePrimitives'
-import { FormControl, Input, InputAdornment, styled } from "@mui/material";
+import { FormControl, Input, InputAdornment, styled } from '@mui/material'
 
 const StyledInput = styled(Input)(({ theme }) => ({
     padding: '8px',
@@ -45,11 +45,11 @@ export const SearchInput = () => {
             <StyledInput
                 id='search-input'
                 startAdornment={
-                    <InputAdornment position="start">
+                    <InputAdornment position='start'>
                         <IoSearch size={24} />
                     </InputAdornment>
                 }
-                placeholder="Search" 
+                placeholder='Search'
             />
         </FormControl>
     )

@@ -1,5 +1,5 @@
-import { memo } from "react";
-import { TfiClose } from "react-icons/tfi"
+import { memo } from 'react'
+import { TfiClose } from 'react-icons/tfi'
 import { SlMenu } from 'react-icons/sl'
 import { Button } from '@mui/material'
 

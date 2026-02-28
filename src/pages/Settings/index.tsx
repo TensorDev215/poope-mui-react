@@ -7,7 +7,6 @@ import Profile from './section/Profile'
 import Security from './section/Security'
 import Help from './section/Help'
 import Contact from './section/Contact'
-import AppIcon from '@/components/AppIcon'
 import { Icons } from '@/components/AppIcon/icons'
 
 const menuItems = [
@@ -69,7 +68,7 @@ function a11yProps(index: number) {
 export default function Settings() {
     const [value, setValue] = React.useState(0)
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    const handleChange = (_: unknown, newValue: number) => {
         setValue(newValue)
     }
 
